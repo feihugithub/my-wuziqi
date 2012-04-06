@@ -304,7 +304,7 @@ public class Ai {
 	 * @param positionY 待打分的节点的纵坐标
 	 * @return  该节点考虑了四个方向以后的棋型
 	 */
-	public  int positionRate(int positionX, int positionY) {
+	public int positionRate(int positionX, int positionY) {
 		/**用于记录四个方向中最好的两个棋型*/
 		int[] temp = { -1, -1 };
 		/**考虑了两个方向的棋型的估值*/

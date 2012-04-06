@@ -1,12 +1,17 @@
 package com.succez.wangzr.wuziqi;
 
 import junit.framework.TestCase;
-
 import org.junit.Test;
-
 import com.succez.wangzr.wuziqi.algorithm.Ai;
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
+/**
+ * 测试Ai类的方法
+ * <p>Copyright: Copyright (c) 2012<p>
+ * <p>succez<p>
+ * @author feihu
+ * @createdate 2012-4-6
+ */
 
 public class TestAi extends TestCase {
 
@@ -112,7 +117,67 @@ public class TestAi extends TestCase {
 		ai.table[2][0] = 0;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.SINGLE, test);
+		
+		ai.table[0][0]=Constant.WHITECHESS;
+		test = ai.getHorizChessStyle(1, 0);
+		assertEquals(ChessStyle.SINGLE, test);
+		ai.table[2][0]=Constant.BLACKCHESS;
+		test = ai.getHorizChessStyle(1, 0);
+		assertEquals(ChessStyle.DEAD_2, test);
+		ai.table[3][0]=Constant.BLACKCHESS;
+		test = ai.getHorizChessStyle(1, 0);
+		assertEquals(ChessStyle.DEAD_3, test);
+		ai.table[4][0]=Constant.BLACKCHESS;
+		test = ai.getHorizChessStyle(1, 0);
+		assertEquals(ChessStyle.DEAD_4, test);
 	}
-
+	@Test
+	public void testpositionRate(){
+		Ai ai=new Ai();
+		int test=-1;
+		ai.table[0][0]=Constant.BLACKCHESS;
+		test=ai.positionRate(0, 0);
+		assertEquals(ChessStyle.SINGLE, test);
+		ai.table[1][0]=Constant.BLACKCHESS;
+		test=ai.positionRate(0, 0);
+		assertEquals(ChessStyle.DEAD_2, test);
+		ai.table[2][0]=Constant.BLACKCHESS;
+		test=ai.positionRate(0, 0);
+		assertEquals(ChessStyle.DEAD_3, test);
+		ai.table[3][0]=Constant.BLACKCHESS;
+		test=ai.positionRate(0, 0);
+		assertEquals(ChessStyle.DEAD_4, test);
+		ai.table[4][0]=Constant.BLACKCHESS;
+		test=ai.positionRate(0, 0);
+		assertEquals(ChessStyle.SUCCESS_5, test);
+		
+		ai.table[0][0]=Constant.WHITECHESS;
+		test=ai.positionRate(4, 0);
+		assertEquals(ChessStyle.DEAD_4, test);
+		
+		ai.table[2][1]=Constant.BLACKCHESS;
+		ai.table[3][2]=Constant.BLACKCHESS;
+		ai.table[4][3]=Constant.BLACKCHESS;
+		test=ai.positionRate(1, 0);
+		assertEquals(ChessStyle.DOUBLE_DEAD_4+10, test);
+		
+		ai.table[4][4]=Constant.BLACKCHESS;
+		ai.table[4][5]=Constant.BLACKCHESS;
+		test=ai.positionRate(4, 3);
+		assertEquals(ChessStyle.DEAD_4_LIVE_3+20, test);
+		
+		ai.table[1][0]=0;
+		test=ai.positionRate(4, 3);
+		assertEquals(ChessStyle.DOUBLE_LIVE_3, test);
+		
+		ai.table[1][0]=Constant.WHITECHESS;
+		test=ai.positionRate(4, 3);
+		assertEquals(ChessStyle.DEAD_3_LIVE_3, test);
+		
+		ai.table[2][1]=0;
+		ai.table[4][5]=0;
+		test=ai.positionRate(4, 3);
+		assertEquals(ChessStyle.DOUBLE_LIVE_2, test);
+	}
 
 }
