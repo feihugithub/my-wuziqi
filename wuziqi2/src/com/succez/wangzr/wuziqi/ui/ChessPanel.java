@@ -61,7 +61,7 @@ public class ChessPanel extends JPanel {
 	public ChessPanel() {
 		chessMethod = new ChessMethod();
 		gridSpace = 40;
-		chessradius = 15;
+		chessradius = 20;
 		chessPanelWidth = 640;
 		chessPanelheight = 640;
 		txtShower = new JTextField();

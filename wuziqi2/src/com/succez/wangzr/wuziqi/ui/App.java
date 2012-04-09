@@ -158,8 +158,8 @@ public class App extends JFrame {
 		btnUphand.addActionListener(first);
 		btnLevel.addActionListener(le);
 		btnStart.addActionListener(st);
-		this.setLayout(new FlowLayout());
 		this.add(chessPanel);
+		this.setLayout(new FlowLayout());
 		this.add(btnStart);
 		this.add(btnReset);
 		this.add(btnMode);

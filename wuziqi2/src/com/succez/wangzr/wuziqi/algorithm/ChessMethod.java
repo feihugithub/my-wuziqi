@@ -179,7 +179,7 @@ public class ChessMethod {
 	 * @param nextPositionY      待与当前节点比较的下一个节点的纵坐标
 	 * @return  返回两个节点上棋子颜色的异同情况
 	 */
-	private boolean compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY) {
+	public boolean compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY) {
 		if (nextPositionX < 0 || nextPositionX > 14)
 			return false;
 		else if (nextPositionY < 0 || nextPositionY > 14)
@@ -223,6 +223,7 @@ public class ChessMethod {
 		}
 		else {
 			locationP.positionX = -1;
+			locationP.positionY = -1;
 			return locationP;
 		}
 	}
