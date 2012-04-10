@@ -54,4 +54,8 @@ public interface Constant {
 	/**高级电脑*/
 	public static final int ADVANCE = -1;
 
+	public static final int WIN = 1000;
+
+	public static final int LOSE = -1000;
+
 }

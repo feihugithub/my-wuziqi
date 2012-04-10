@@ -499,4 +499,34 @@ public class Ai {
 				}
 		return max;
 	}
+	/**
+	 * 对某一个棋盘，根据参数给定的执棋者，判断他的局势
+	 * @param color  指定执棋者
+	 * @return  返回对局势评估的值
+	 */
+	public int panelRate(int color){
+		int rate=-1000;
+		for(int i=0;i<15;i++){
+			for(int j=0;j<15;j++){
+				if(table[i][j]==color){
+					int temp=maxRate();
+					if(temp>rate){
+						rate=temp;
+					}
+				}
+			}
+		}
+		if(color==Constant.BLACKCHESS){
+			return rate;
+		}
+		return -rate;
+	}	
+	public int maxRate(){	
+		int maxrate=panelRate(Constant.BLACKCHESS);
+		int minrate=panelRate(Constant.WHITECHESS);
+		int situation=maxrate+minrate;
+		if(maxrate==ChessStyle.SUCCESS_5&&minrate!=-ChessStyle.SUCCESS_5)situation=Constant.WIN;
+		else if(minrate==-ChessStyle.SUCCESS_5)situation=Constant.LOSE;
+		return situation;
+	}
 }
