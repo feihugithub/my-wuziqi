@@ -86,7 +86,7 @@ public class ChessPanel extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated metthod stub
+			// TODO Auto-generated method stub
 			if (chessMethod.winer == 0 && runTimeStatus == Constant.RUN) {
 				if (chessMethod.gameMode == Constant.PTOP) {
 					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
@@ -108,7 +108,6 @@ public class ChessPanel extends JPanel {
 				}
 			}
 		}
-
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub

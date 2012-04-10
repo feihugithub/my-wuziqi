@@ -47,7 +47,7 @@ public class App extends JFrame {
 	/**
 	 * 开始按钮监听事件
 	 */
-	private ActionListener st = new ActionListener() {
+	private ActionListener start = new ActionListener() {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -55,7 +55,7 @@ public class App extends JFrame {
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
 			if (chessPanel.chessMethod.gameMode == Constant.PTOPC && firsthand == Constant.PCFIRST) {
-				chessPanel.chessMethod.ai.table[7][7]=Constant.BLACKCHESS;
+				chessPanel.chessMethod.ai.table[7][7] = Constant.BLACKCHESS;
 				chessPanel.paint(chessPanel.getGraphics());
 			}
 
@@ -65,18 +65,16 @@ public class App extends JFrame {
 	/**
 	 * 级别选择按钮监听事件
 	 */
-	private ActionListener le = new ActionListener() {
+	private ActionListener level = new ActionListener() {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (chessPanel.chessMethod.gameMode == Constant.PTOPC) {
-				chessPanel.chessMethod.aiLevel = -chessPanel.chessMethod.aiLevel;
-				if (chessPanel.chessMethod.aiLevel == Constant.PRIMARY) {
-					btnLevel.setText("初级");
-				}
-				else {
-					btnLevel.setText("高级");
-				}
+			chessPanel.chessMethod.aiLevel = -chessPanel.chessMethod.aiLevel;
+			if (chessPanel.chessMethod.aiLevel == Constant.PRIMARY) {
+				btnLevel.setText("初级");
+			}
+			else {
+				btnLevel.setText("高级");
 			}
 		}
 	};
@@ -84,7 +82,7 @@ public class App extends JFrame {
 	/**
 	 * 模式选择按钮监听事件
 	 */
-	private ActionListener m = new ActionListener() {
+	private ActionListener mode = new ActionListener() {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -92,9 +90,13 @@ public class App extends JFrame {
 				chessPanel.chessMethod.gameMode = -chessPanel.chessMethod.gameMode;
 				if (chessPanel.chessMethod.gameMode == Constant.PTOP) {
 					btnMode.setText("双人对战");
+					btnUphand.setVisible(false);
+					btnLevel.setVisible(false);
 				}
 				else {
 					btnMode.setText("人机对战");
+					btnUphand.setVisible(true);
+					btnLevel.setVisible(true);
 				}
 			}
 		}
@@ -103,7 +105,7 @@ public class App extends JFrame {
 	/**
 	 * 重置按钮监听事件
 	 */
-	private ActionListener rst = new ActionListener() {
+	private ActionListener reset = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -130,14 +132,12 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (chessPanel.chessMethod.gameMode == Constant.PTOPC) {
-				firsthand = -firsthand;
-				if (firsthand == Constant.PCFIRST) {
-					btnUphand.setText("电脑");
-				}
-				else
-					btnUphand.setText("棋手");
+			firsthand = -firsthand;
+			if (firsthand == Constant.PCFIRST) {
+				btnUphand.setText("电脑先下");
 			}
+			else
+				btnUphand.setText("棋手先下");
 		}
 	};
 
@@ -150,14 +150,16 @@ public class App extends JFrame {
 		btnStart = new JButton("开始");
 		btnReset = new JButton("重新开始");
 		btnMode = new JButton("双人对战");
-		btnUphand = new JButton("电脑");
+		btnUphand = new JButton("电脑先下");
 		btnLevel = new JButton("初级");
 		btnReset.setVisible(false);
-		btnMode.addActionListener(m);
-		btnReset.addActionListener(rst);
+		btnUphand.setVisible(false);
+		btnLevel.setVisible(false);
+		btnMode.addActionListener(mode);
+		btnReset.addActionListener(reset);
 		btnUphand.addActionListener(first);
-		btnLevel.addActionListener(le);
-		btnStart.addActionListener(st);
+		btnLevel.addActionListener(level);
+		btnStart.addActionListener(start);
 		this.add(chessPanel);
 		this.setLayout(new FlowLayout());
 		this.add(btnStart);
@@ -169,6 +171,6 @@ public class App extends JFrame {
 
 	public static void main(String[] args) {
 		App app = new App();
-		SwingConsole.run(app, 640, 710);
+		SwingConsole.run(app, 640, 705);
 	}
 }

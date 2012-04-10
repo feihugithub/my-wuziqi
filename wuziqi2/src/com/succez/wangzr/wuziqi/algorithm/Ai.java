@@ -1,9 +1,12 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
+import org.slf4j.LoggerFactory;
+
+import org.slf4j.Logger;
+
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.Point;
-import com.succez.wangzr.wuziqi.tools.RecordStack;
 
 /**
  * Ai查找最优点算法
@@ -13,24 +16,20 @@ import com.succez.wangzr.wuziqi.tools.RecordStack;
  * @createdate 2012-4-1
  */
 public class Ai {
+	private final static Logger AILO_LOGGER = LoggerFactory.getLogger(Ai.class);
+
 	/**
 	 * 记录棋盘的信息
 	 */
 	public int[][] table = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+
 	/**
 	 * 比较两个位置的棋子是否相同
 	 * @param currentPositionX  待比较的当前节点的横坐标
@@ -46,7 +45,7 @@ public class Ai {
 		else if (nextPositionY < 0 || nextPositionY > 14)
 			/**此种情况表明next位置在棋盘的上或者下方向的外部*/
 			return Constant.CROSSBORDER;
-		else if (table[currentPositionX][currentPositionY]== table[nextPositionX][nextPositionY])
+		else if (table[currentPositionX][currentPositionY] == table[nextPositionX][nextPositionY])
 			return Constant.SAME;
 		return Constant.DIFFERENT;
 	}
@@ -80,7 +79,7 @@ public class Ai {
 					countH++;
 					break;
 				default:
-					if (table[positionX-i][positionY]!= 0)
+					if (table[positionX - i][positionY] != 0)
 						leftEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -100,7 +99,7 @@ public class Ai {
 					countH++;
 					break;
 				default:
-					if (table[positionX+i][positionY]!= 0)
+					if (table[positionX + i][positionY] != 0)
 						rightEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -131,7 +130,7 @@ public class Ai {
 					countS++;
 					break;
 				default:
-					if (table[positionX][positionY-i]!= 0)
+					if (table[positionX][positionY - i] != 0)
 						leftEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -147,7 +146,7 @@ public class Ai {
 					countS++;
 					break;
 				default:
-					if (table[positionX][positionY+i]!= 0)
+					if (table[positionX][positionY + i] != 0)
 						rightEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -180,7 +179,7 @@ public class Ai {
 					countP++;
 					break;
 				default:
-					if (table[positionX-i][positionY+i]!= 0)
+					if (table[positionX - i][positionY + i] != 0)
 						leftEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -196,7 +195,7 @@ public class Ai {
 					countP++;
 					break;
 				default:
-					if (table[positionX+i][positionY-i]!= 0)
+					if (table[positionX + i][positionY - i] != 0)
 						rightEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -229,7 +228,7 @@ public class Ai {
 					countN++;
 					break;
 				default:
-					if (table[positionX-i][positionY-i]!= 0)
+					if (table[positionX - i][positionY - i] != 0)
 						leftEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -245,7 +244,7 @@ public class Ai {
 					countN++;
 					break;
 				default:
-					if (table[positionX+i][positionY+i]!= 0)
+					if (table[positionX + i][positionY + i] != 0)
 						rightEmpty = Constant.CROWD;
 			}
 			if (comparison != Constant.SAME)
@@ -255,7 +254,6 @@ public class Ai {
 		return analysisChessStyle(countN, leftEmpty, rightEmpty);
 
 	}
-
 
 	/**
 	 * 根据某一方向上的连子数目和左右尽头的情况确定棋型
@@ -408,82 +406,97 @@ public class Ai {
 		for (int i = 0; i != 14; i++) {
 			for (int j = 0; j != 14; j++) {
 				if (table[i][j] == 0) {
-					table[i][j]=Constant.WHITECHESS;
+					table[i][j] = Constant.WHITECHESS;
 					tempscore = positionRate(i, j);
 					if (tempscore > maxscore) {
 						maxscore = tempscore;
 						maxPositionX = i;
 						maxPositionY = j;
 					}
-					table[i][j]=Constant.BLACKCHESS;
+					table[i][j] = Constant.BLACKCHESS;
 					tempscore = positionRate(i, j) + 1;
 					if (tempscore > maxscore) {
 						maxscore = tempscore;
 						maxPositionX = i;
 						maxPositionY = j;
 					}
-					table[i][j]=0;
+					table[i][j] = 0;
 				}
 			}
 		}
 		Point point = new Point(maxPositionX, maxPositionY);
+		AILO_LOGGER.info("ai找到的点的估值是:{}", maxscore);
 		return point;
 	}
 
+	/**
+	 * 高级Ai查找最优下棋点
+	 * @return 查找到的最优下棋点
+	 */
 	public Point advancedFind() {
-		RecordStack r1 = new RecordStack(0, 0, -1000);
-		RecordStack r2 = new RecordStack(0, 0, 1000);
+		Point point = new Point(-1, -1);
+		int max = -1000;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
-					table[i][j]=Constant.BLACKCHESS;
+					table[i][j] = Constant.BLACKCHESS;
 					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
-						Point point = new Point(i, j);
-						table[i][j]=0;
+						point.positionX = i;
+						point.positionY = j;
+						table[i][j] = 0;
 						return point;
 					}
 					else {
-						findMax(r2);
-						if (r2.backValue > r1.backValue) {
-							r1.backValue = r2.backValue;
-							r1.positionX = i;
-							r1.positionY = j;
+						int backValue = minSearch();
+						if (backValue > max) {
+							max = backValue;
+							point.positionX = i;
+							point.positionY = j;
 						}
-						table[i][j]=0;
+						table[i][j] = 0;
 					}
 				}
 			}
-		Point point = new Point(r1.positionX, r1.positionY);
+		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
 		return point;
 	}
 
-	private void findMax(RecordStack r) {
+	/**
+	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
+	 * @return 该棋局的子节点的最小的回溯值
+	 */
+	private int minSearch() {
+		int min = 1000;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
-					table[i][j]=Constant.WHITECHESS;
-					int temp = findMin();
-					if (temp > r.backValue) {
-						r.backValue = temp;
-						r.positionX = i;
-						r.positionY = j;
+					table[i][j] = Constant.WHITECHESS;
+					int backValue = maxSearch();
+					if (backValue < min) {
+						min = backValue;
 					}
-					table[i][j]=0;
+					table[i][j] = 0;
 				}
 			}
+		return min;
 	}
 
-	private int findMin() {
-		int min = 1000;
+	/**
+	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
+	 * @return  该棋局的子节点的最大的回溯值
+	 */
+	private int maxSearch() {
+		int max = -1000;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++)
 				if (table[i][j] == 0) {
-					table[i][j]=Constant.BLACKCHESS;
-					int temp = positionRate(i, j);
-					if (temp < min)
-						min = temp;
-					table[i][j]=0;
+					table[i][j] = Constant.BLACKCHESS;
+					int rate = positionRate(i, j);
+					if (rate > max) {
+						max = rate;
+					}
+					table[i][j] = 0;
 				}
-		return min;
+		return max;
 	}
 }

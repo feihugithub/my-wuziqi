@@ -1,5 +1,8 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.Point;
 
@@ -11,6 +14,10 @@ import com.succez.wangzr.wuziqi.tools.Point;
  * @createdate 2012-4-1
  */
 public class ChessMethod {
+	/**
+	 * 用来记录棋局方法类的日志信息
+	 */
+	private final static Logger methodLogger = LoggerFactory.getLogger(ChessMethod.class);
 
 	public Ai ai = new Ai();
 
@@ -44,9 +51,16 @@ public class ChessMethod {
 				ai.table[p.positionX][p.positionY] = owner;
 				owner = -owner;
 			}
+			else {
+				methodLogger.warn("您没有把棋子下到有效的区域内");
+			}
 			if (isWin(p.positionX, p.positionY))
 				winer = -owner;
 		}
+		else{
+			methodLogger.warn("您没有把棋子下到有效的区域内");
+		}
+			
 	}
 
 	/**
@@ -55,7 +69,7 @@ public class ChessMethod {
 	 * @param panelLocationY  棋手在物理棋盘上点下点的纵坐标
 	 * @param space           棋盘格子间距
 	 * @param radius          棋子半径
-	 * @return  返回值表明人是否把棋子下到了有效的位置,true表示棋子下到了有效的位置，fasle表示没有
+	 * @return  返回值表明人是否把棋子下到了有效的位置,true表示棋子下到了有效的位置，false表示没有
 	 */
 	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius) {
 		Point positionP = new Point(panelLocationX, panelLocationY);
@@ -68,6 +82,7 @@ public class ChessMethod {
 				return true;
 			}
 		}
+		methodLogger.warn("您没有把棋子下到有效的区域内");
 		return false;
 	}
 
@@ -82,9 +97,13 @@ public class ChessMethod {
 			aiPostionP = ai.advancedFind();
 		}
 		ai.table[aiPostionP.positionX][aiPostionP.positionY] = Constant.BLACKCHESS;
-		if (isWin(aiPostionP.positionX, aiPostionP.positionY))
+		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			winer = Constant.BLACKCHESS;
-
+		}
+		methodLogger.info("ai找到的点是:positionX={},positionY={}", aiPostionP.positionX, aiPostionP.positionY);
+		if (winer == Constant.BLACKCHESS) {
+			methodLogger.info("ai胜利了");
+		}
 	}
 
 	/**
