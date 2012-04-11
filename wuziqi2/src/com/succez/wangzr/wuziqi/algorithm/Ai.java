@@ -471,7 +471,7 @@ public class Ai {
 			for (int j = 0; j != 15; j++)
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
-					int rate = minSearch();
+					int rate = minSearch(max);
 					if (rate > max) {
 						max = rate;
 					}
@@ -484,13 +484,20 @@ public class Ai {
 	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
 	 * @return 该棋局的子节点的最小的回溯值
 	 */
-	private int minSearch() {
+	private int minSearch(int α) {
 		int min = 1000;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
 					int backValue = maxRate();
+					/**
+					 * α剪枝
+					 */
+					if (backValue < α) {
+						table[i][j] = 0;
+						return backValue;
+					}
 					if (backValue < min) {
 						min = backValue;
 					}

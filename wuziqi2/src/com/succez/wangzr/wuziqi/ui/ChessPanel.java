@@ -77,6 +77,9 @@ public class ChessPanel extends JPanel {
 		this.addMouseListener(chess);
 	}
 
+	/**
+	 * 鼠标监听事件
+	 */
 	private MouseListener chess = new MouseListener() {
 
 		@Override
@@ -108,6 +111,7 @@ public class ChessPanel extends JPanel {
 				}
 			}
 		}
+
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
@@ -126,7 +130,9 @@ public class ChessPanel extends JPanel {
 
 		}
 	};
-
+/**
+ * 棋盘重绘时调用该函数，每次有人落子后重绘
+ */
 	public void paint(Graphics g) {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());// 不清楚
