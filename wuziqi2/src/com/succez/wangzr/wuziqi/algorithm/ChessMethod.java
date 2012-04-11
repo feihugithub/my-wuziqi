@@ -50,6 +50,12 @@ public class ChessMethod {
 			if (ai.table[p.positionX][p.positionY] == 0) {
 				ai.table[p.positionX][p.positionY] = owner;
 				owner = -owner;
+				if(owner==Constant.BLACKCHESS){
+					methodLogger.info("白棋棋手在({},{})落子",p.positionX,p.positionY);
+				}
+				else {
+					methodLogger.info("黑棋棋手在({},{})落子",p.positionX,p.positionY);
+				}
 			}
 			else {
 				methodLogger.warn("您没有把棋子下到有效的区域内");
@@ -79,7 +85,11 @@ public class ChessMethod {
 				ai.table[positionP.positionX][positionP.positionY] = Constant.WHITECHESS;
 				if (isWin(positionP.positionX, positionP.positionY))
 					winer = Constant.WHITECHESS;
+				methodLogger.info("棋手在({},{})落子",positionP.positionX,positionP.positionY);
 				return true;
+			}
+			else {
+				methodLogger.warn("您没有把棋子下到有效的区域内");
 			}
 		}
 		methodLogger.warn("您没有把棋子下到有效的区域内");
@@ -100,7 +110,7 @@ public class ChessMethod {
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			winer = Constant.BLACKCHESS;
 		}
-		methodLogger.info("ai找到的点是:positionX={},positionY={}", aiPostionP.positionX, aiPostionP.positionY);
+		methodLogger.info("ai在({},{})落子", aiPostionP.positionX, aiPostionP.positionY);
 		if (winer == Constant.BLACKCHESS) {
 			methodLogger.info("ai胜利了");
 		}

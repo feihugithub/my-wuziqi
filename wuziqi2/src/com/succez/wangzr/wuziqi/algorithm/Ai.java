@@ -447,7 +447,7 @@ public class Ai {
 						return point;
 					}
 					else {
-						int backValue = minSearch();
+						int backValue = maxSearch();
 						if (backValue > max) {
 							max = backValue;
 							point.positionX = i;
@@ -462,6 +462,25 @@ public class Ai {
 	}
 
 	/**
+	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
+	 * @return  该棋局的子节点的最大的回溯值
+	 */
+	private int maxSearch() {
+		int max = -1000;
+		for (int i = 0; i != 15; i++)
+			for (int j = 0; j != 15; j++)
+				if (table[i][j] == 0) {
+					table[i][j] = Constant.BLACKCHESS;
+					int rate = minSearch();
+					if (rate > max) {
+						max = rate;
+					}
+					table[i][j] = 0;
+				}
+		return max;
+	}
+
+	/**
 	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
 	 * @return 该棋局的子节点的最小的回溯值
 	 */
@@ -471,7 +490,7 @@ public class Ai {
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
-					int backValue = maxSearch();
+					int backValue = maxRate();
 					if (backValue < min) {
 						min = backValue;
 					}
@@ -482,51 +501,36 @@ public class Ai {
 	}
 
 	/**
-	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
-	 * @return  该棋局的子节点的最大的回溯值
-	 */
-	private int maxSearch() {
-		int max = -1000;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++)
-				if (table[i][j] == 0) {
-					table[i][j] = Constant.BLACKCHESS;
-					int rate = positionRate(i, j);
-					if (rate > max) {
-						max = rate;
-					}
-					table[i][j] = 0;
-				}
-		return max;
-	}
-	/**
 	 * 对某一个棋盘，根据参数给定的执棋者，判断他的局势
 	 * @param color  指定执棋者
 	 * @return  返回对局势评估的值
 	 */
-	public int panelRate(int color){
-		int rate=-1000;
-		for(int i=0;i<15;i++){
-			for(int j=0;j<15;j++){
-				if(table[i][j]==color){
-					int temp=maxRate();
-					if(temp>rate){
-						rate=temp;
+	public int panelRate(int color) {
+		int rate = -1000;
+		for (int i = 0; i < 15; i++) {
+			for (int j = 0; j < 15; j++) {
+				if (table[i][j] == color) {
+					int temp = positionRate(i, j);
+					if (temp > rate) {
+						rate = temp;
 					}
 				}
 			}
 		}
-		if(color==Constant.BLACKCHESS){
+		if (color == Constant.BLACKCHESS) {
 			return rate;
 		}
 		return -rate;
-	}	
-	public int maxRate(){	
-		int maxrate=panelRate(Constant.BLACKCHESS);
-		int minrate=panelRate(Constant.WHITECHESS);
-		int situation=maxrate+minrate;
-		if(maxrate==ChessStyle.SUCCESS_5&&minrate!=-ChessStyle.SUCCESS_5)situation=Constant.WIN;
-		else if(minrate==-ChessStyle.SUCCESS_5)situation=Constant.LOSE;
+	}
+
+	public int maxRate() {
+		int maxrate = panelRate(Constant.BLACKCHESS);
+		int minrate = panelRate(Constant.WHITECHESS);
+		int situation = maxrate + minrate;
+		if (maxrate >= ChessStyle.LIVE_4 && minrate >= -ChessStyle.LIVE_4)
+			situation = Constant.WIN;
+		else if (minrate <= -ChessStyle.LIVE_4)
+			situation = Constant.LOSE;
 		return situation;
 	}
 }

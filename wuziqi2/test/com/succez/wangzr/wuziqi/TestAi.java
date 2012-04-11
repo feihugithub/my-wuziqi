@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.succez.wangzr.wuziqi.algorithm.Ai;
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
+
 /**
  * 测试Ai类的方法
  * <p>Copyright: Copyright (c) 2012<p>
@@ -117,67 +118,108 @@ public class TestAi extends TestCase {
 		ai.table[2][0] = 0;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.SINGLE, test);
-		
-		ai.table[0][0]=Constant.WHITECHESS;
+
+		ai.table[0][0] = Constant.WHITECHESS;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.SINGLE, test);
-		ai.table[2][0]=Constant.BLACKCHESS;
+		ai.table[2][0] = Constant.BLACKCHESS;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.DEAD_2, test);
-		ai.table[3][0]=Constant.BLACKCHESS;
+		ai.table[3][0] = Constant.BLACKCHESS;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.DEAD_3, test);
-		ai.table[4][0]=Constant.BLACKCHESS;
+		ai.table[4][0] = Constant.BLACKCHESS;
 		test = ai.getHorizChessStyle(1, 0);
 		assertEquals(ChessStyle.DEAD_4, test);
 	}
+
 	@Test
-	public void testpositionRate(){
-		Ai ai=new Ai();
-		int test=-1;
-		ai.table[0][0]=Constant.BLACKCHESS;
-		test=ai.positionRate(0, 0);
+	public void testpositionRate() {
+		Ai ai = new Ai();
+		int test = -1;
+		ai.table[0][0] = Constant.BLACKCHESS;
+		test = ai.positionRate(0, 0);
 		assertEquals(ChessStyle.SINGLE, test);
-		ai.table[1][0]=Constant.BLACKCHESS;
-		test=ai.positionRate(0, 0);
+		ai.table[1][0] = Constant.BLACKCHESS;
+		test = ai.positionRate(0, 0);
 		assertEquals(ChessStyle.DEAD_2, test);
-		ai.table[2][0]=Constant.BLACKCHESS;
-		test=ai.positionRate(0, 0);
+		ai.table[2][0] = Constant.BLACKCHESS;
+		test = ai.positionRate(0, 0);
 		assertEquals(ChessStyle.DEAD_3, test);
-		ai.table[3][0]=Constant.BLACKCHESS;
-		test=ai.positionRate(0, 0);
+		ai.table[3][0] = Constant.BLACKCHESS;
+		test = ai.positionRate(0, 0);
 		assertEquals(ChessStyle.DEAD_4, test);
-		ai.table[4][0]=Constant.BLACKCHESS;
-		test=ai.positionRate(0, 0);
+		ai.table[4][0] = Constant.BLACKCHESS;
+		test = ai.positionRate(0, 0);
 		assertEquals(ChessStyle.SUCCESS_5, test);
-		
-		ai.table[0][0]=Constant.WHITECHESS;
-		test=ai.positionRate(4, 0);
+
+		ai.table[0][0] = Constant.WHITECHESS;
+		test = ai.positionRate(4, 0);
 		assertEquals(ChessStyle.DEAD_4, test);
-		
-		ai.table[2][1]=Constant.BLACKCHESS;
-		ai.table[3][2]=Constant.BLACKCHESS;
-		ai.table[4][3]=Constant.BLACKCHESS;
-		test=ai.positionRate(1, 0);
-		assertEquals(ChessStyle.DOUBLE_DEAD_4+10, test);
-		
-		ai.table[4][4]=Constant.BLACKCHESS;
-		ai.table[4][5]=Constant.BLACKCHESS;
-		test=ai.positionRate(4, 3);
-		assertEquals(ChessStyle.DEAD_4_LIVE_3+20, test);
-		
-		ai.table[1][0]=0;
-		test=ai.positionRate(4, 3);
+
+		ai.table[2][1] = Constant.BLACKCHESS;
+		ai.table[3][2] = Constant.BLACKCHESS;
+		ai.table[4][3] = Constant.BLACKCHESS;
+		test = ai.positionRate(1, 0);
+		assertEquals(ChessStyle.DOUBLE_DEAD_4 + 10, test);
+
+		ai.table[4][4] = Constant.BLACKCHESS;
+		ai.table[4][5] = Constant.BLACKCHESS;
+		test = ai.positionRate(4, 3);
+		assertEquals(ChessStyle.DEAD_4_LIVE_3 + 20, test);
+
+		ai.table[1][0] = 0;
+		test = ai.positionRate(4, 3);
 		assertEquals(ChessStyle.DOUBLE_LIVE_3, test);
-		
-		ai.table[1][0]=Constant.WHITECHESS;
-		test=ai.positionRate(4, 3);
+
+		ai.table[1][0] = Constant.WHITECHESS;
+		test = ai.positionRate(4, 3);
 		assertEquals(ChessStyle.DEAD_3_LIVE_3, test);
-		
-		ai.table[2][1]=0;
-		ai.table[4][5]=0;
-		test=ai.positionRate(4, 3);
+
+		ai.table[2][1] = 0;
+		ai.table[4][5] = 0;
+		test = ai.positionRate(4, 3);
 		assertEquals(ChessStyle.DOUBLE_LIVE_2, test);
 	}
 
+	@Test
+	public void testpanelRate() {
+		Ai ai = new Ai();
+		ai.table[7][7]=Constant.BLACKCHESS;
+		ai.table[8][6]=Constant.BLACKCHESS;
+		ai.table[7][8]=Constant.BLACKCHESS;
+		ai.table[7][6]=Constant.BLACKCHESS;
+		ai.table[6][7]=Constant.BLACKCHESS;
+		ai.table[8][5]=Constant.BLACKCHESS;
+		ai.table[6][6]=Constant.BLACKCHESS;
+		ai.table[9][6]=Constant.BLACKCHESS;
+		ai.table[9][7]=Constant.BLACKCHESS;
+		ai.table[9][9]=Constant.BLACKCHESS;
+		ai.table[10][9]=Constant.BLACKCHESS;		
+		
+		ai.table[8][8]=Constant.WHITECHESS;
+		ai.table[6][8]=Constant.WHITECHESS;
+		ai.table[7][9]=Constant.WHITECHESS;
+		ai.table[7][5]=Constant.WHITECHESS;
+		ai.table[6][9]=Constant.WHITECHESS;
+//		ai.table[5][8]=Constant.WHITECHESS;
+		ai.table[8][9]=Constant.WHITECHESS;
+		ai.table[8][7]=Constant.WHITECHESS;
+		ai.table[10][6]=Constant.WHITECHESS;
+		ai.table[5][9]=Constant.WHITECHESS;
+		ai.table[4][9]=Constant.WHITECHESS;
+		
+		int test = ai.panelRate(Constant.BLACKCHESS);
+		assertEquals(ChessStyle.DEAD_4_LIVE_3+20, test);
+		test=ai.panelRate(Constant.WHITECHESS);
+		assertEquals(-ChessStyle.SUCCESS_5, test);
+	    test=ai.maxRate();
+	    assertEquals(Constant.LOSE, test);
+	    ai.table[5][6]=Constant.BLACKCHESS;
+	    test=ai.maxRate();
+	    assertEquals(Constant.LOSE, test);
+	    ai.table[4][9]=0;
+	    test=ai.maxRate();
+	    assertEquals(Constant.WIN, test);
+	}
 }

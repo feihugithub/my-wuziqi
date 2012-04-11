@@ -69,12 +69,14 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			chessPanel.chessMethod.aiLevel = -chessPanel.chessMethod.aiLevel;
-			if (chessPanel.chessMethod.aiLevel == Constant.PRIMARY) {
-				btnLevel.setText("初级");
-			}
-			else {
-				btnLevel.setText("高级");
+			if (chessPanel.runTimeStatus == Constant.STOP){
+				chessPanel.chessMethod.aiLevel = -chessPanel.chessMethod.aiLevel;
+				if (chessPanel.chessMethod.aiLevel == Constant.PRIMARY) {
+					btnLevel.setText("初级");
+				}
+				else {
+					btnLevel.setText("高级");
+				}
 			}
 		}
 	};
@@ -132,12 +134,14 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			firsthand = -firsthand;
-			if (firsthand == Constant.PCFIRST) {
-				btnUphand.setText("电脑先下");
-			}
-			else
-				btnUphand.setText("棋手先下");
+			if (chessPanel.runTimeStatus == Constant.STOP){
+				firsthand = -firsthand;
+				if (firsthand == Constant.PCFIRST) {
+					btnUphand.setText("电脑先下");
+				}
+				else
+					btnUphand.setText("棋手先下");
+			}	
 		}
 	};
 
