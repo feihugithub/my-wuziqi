@@ -7,12 +7,18 @@ public class Point {
 	public int positionX;
 
 	public int positionY;
+	
+	public int rateValue;
 
 	/**
 	 * 带参数的构造函数
 	 */
 	public Point(int x, int y) {
+		this(x,y,0);
+	}
+	public Point(int x, int y,int value) {
 		positionX = x;
 		positionY = y;
+		rateValue=value;
 	}
 }

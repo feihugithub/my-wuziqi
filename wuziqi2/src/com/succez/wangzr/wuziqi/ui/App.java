@@ -1,5 +1,6 @@
 ﻿package com.succez.wangzr.wuziqi.ui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,9 +57,9 @@ public class App extends JFrame {
 			btnReset.setVisible(true);
 			if (chessPanel.chessMethod.gameMode == Constant.PTOPC && firsthand == Constant.PCFIRST) {
 				chessPanel.chessMethod.ai.table[7][7] = Constant.BLACKCHESS;
-				chessPanel.paint(chessPanel.getGraphics());
+				chessPanel.chessMethod.owner=-chessPanel.chessMethod.owner;
 			}
-
+			chessPanel.paint(chessPanel.getGraphics());
 		}
 	};
 
@@ -115,7 +116,17 @@ public class App extends JFrame {
 			/**重置胜利者信息*/
 			chessPanel.chessMethod.winer = 0;
 			/**重置双人对战时下棋所有权*/
-			chessPanel.chessMethod.owner = Constant.BLACKCHESS;
+			if(chessPanel.chessMethod.gameMode==Constant.PTOP){
+				chessPanel.chessMethod.owner = Constant.BLACKCHESS;
+			}
+			else {
+				if(firsthand==Constant.PCFIRST){
+					chessPanel.chessMethod.owner = Constant.BLACKCHESS;
+				}
+				else {
+					chessPanel.chessMethod.owner = Constant.WHITECHESS;
+				}
+			}
 			/** 重置现在运行情况*/
 			chessPanel.runTimeStatus = Constant.STOP;
 			btnStart.setVisible(true);
@@ -138,9 +149,13 @@ public class App extends JFrame {
 				firsthand = -firsthand;
 				if (firsthand == Constant.PCFIRST) {
 					btnUphand.setText("电脑先下");
+					chessPanel.chessMethod.owner=Constant.BLACKCHESS;
 				}
-				else
+				else{
 					btnUphand.setText("棋手先下");
+					chessPanel.chessMethod.owner=Constant.WHITECHESS;
+				}
+					
 			}	
 		}
 	};
@@ -171,6 +186,7 @@ public class App extends JFrame {
 		this.add(btnMode);
 		this.add(btnLevel);
 		this.add(btnUphand);
+		this.getContentPane().setBackground(Color.gray);
 	}
 
 	public static void main(String[] args) {

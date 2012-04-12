@@ -86,6 +86,7 @@ public class ChessMethod {
 				if (isWin(positionP.positionX, positionP.positionY))
 					winer = Constant.WHITECHESS;
 				methodLogger.info("棋手在({},{})落子",positionP.positionX,positionP.positionY);
+				owner=-owner;
 				return true;
 			}
 			else {
@@ -110,6 +111,7 @@ public class ChessMethod {
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			winer = Constant.BLACKCHESS;
 		}
+		owner=-owner;
 		methodLogger.info("ai在({},{})落子", aiPostionP.positionX, aiPostionP.positionY);
 		if (winer == Constant.BLACKCHESS) {
 			methodLogger.info("ai胜利了");

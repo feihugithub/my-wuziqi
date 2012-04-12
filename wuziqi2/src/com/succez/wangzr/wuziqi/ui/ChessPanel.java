@@ -68,7 +68,7 @@ public class ChessPanel extends JPanel {
 		txtShower.setHorizontalAlignment(JTextField.CENTER);
 		txtShower.setEditable(false);
 		txtShower.setBorder(BorderFactory.createEmptyBorder());
-		txtShower.setPreferredSize(new Dimension(200, 30));
+		txtShower.setPreferredSize(new Dimension(400, 30));
 		txtShower.setBackground(Color.gray);
 		txtShower.setFont(new Font("楷体", Font.PLAIN, 20));
 		this.setPreferredSize(new Dimension(chessPanelWidth, chessPanelheight));
@@ -130,30 +130,46 @@ public class ChessPanel extends JPanel {
 
 		}
 	};
-/**
- * 棋盘重绘时调用该函数，每次有人落子后重绘
- */
+
+	/**
+	 * 棋盘重绘时调用该函数，每次有人落子后重绘
+	 */
 	public void paint(Graphics g) {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());// 不清楚
 		g.setColor(Color.black);
 		paintPad(g);
 		paintChess(g);
-
-		if (chessMethod.winer != 0)
-			showwiner();
+		showwiner();
 	}
 
 	/**
 	 * 显示胜利者
 	 */
 	public void showwiner() {
-		if (chessMethod.winer == Constant.BLACKCHESS)
-			txtShower.setText("胜利者是黑棋棋手");
-		else if (chessMethod.winer == Constant.WHITECHESS)
-			txtShower.setText("胜利者是白棋棋手");
-		else
+		if (runTimeStatus == Constant.RUN) {
+			if (chessMethod.winer == Constant.BLACKCHESS){
+				txtShower.setText("胜利者是黑棋棋手");
+			}
+			else if (chessMethod.winer == Constant.WHITECHESS){
+				txtShower.setText("胜利者是白棋棋手");
+			}
+			else if (chessMethod.gameMode == Constant.PTOPC) {
+				if (chessMethod.owner == Constant.BLACKCHESS)
+					txtShower.setText("电脑正在思考，请耐心等待！");
+				else if (chessMethod.owner == Constant.WHITECHESS)
+					txtShower.setText("该您下棋");
+			}
+			else if (chessMethod.gameMode == Constant.PTOP) {
+				if (chessMethod.owner == Constant.BLACKCHESS)
+					txtShower.setText("请黑棋棋手下棋");
+				else
+					txtShower.setText("请白棋棋手下棋");
+			}
+		}
+		else{
 			txtShower.setText("");
+		}
 
 	}
 

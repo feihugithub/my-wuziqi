@@ -429,6 +429,32 @@ public class Ai {
 		return point;
 	}
 
+//	public Point downsizing(int location) {
+//		Point[] array = { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+//				new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), };
+//		for (int i = 0; i != 15; i++) {
+//			for (int j = 0; j != 15; j++) {
+//				table[i][j] = Constant.BLACKCHESS;
+//				int temp = positionRate(i, j);
+//				if (temp > array[9].rateValue) {
+//					array[9] = new Point(i, j, temp);
+//					for (int k = 9; k > 0; k--) {
+//						if (array[k].rateValue > array[k - 1].rateValue) {
+//							Point point = array[k];
+//							array[k] = array[k - 1];
+//							array[k - 1] = point;
+//						}
+//						else {
+//							break;
+//						}
+//					}
+//				}
+//				table[i][j]=0;
+//			}
+//		}
+//		return array[location];
+//	}
+
 	/**
 	 * 高级Ai查找最优下棋点
 	 * @return 查找到的最优下棋点
@@ -460,6 +486,34 @@ public class Ai {
 		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
 		return point;
 	}
+
+	//	public Point advancedFind() {
+	//		Point point = new Point(-1, -1);
+	//		int max = -1000;
+	//		for (int i = 0; i != 15; i++)
+	//			for (int j = 0; j != 15; j++) {
+	//				if (table[i][j] == 0) {
+	//					table[i][j] = Constant.BLACKCHESS;
+	//					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+	//						point.positionX = i;
+	//						point.positionY = j;
+	//						table[i][j] = 0;
+	//						return point;
+	//					}
+	//					else {
+	//						int backValue = maxSearch();
+	//						if (backValue > max) {
+	//							max = backValue;
+	//							point.positionX = i;
+	//							point.positionY = j;
+	//						}
+	//						table[i][j] = 0;
+	//					}
+	//				}
+	//			}
+	//		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
+	//		return point;
+	//	}
 
 	/**
 	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
@@ -508,7 +562,7 @@ public class Ai {
 	}
 
 	/**
-	 * 对某一个棋盘，根据参数给定的执棋者，判断他的局势
+	 * 对某一个棋盘，根据参数给定的执棋者，找出其中估值最大的点的估值
 	 * @param color  指定执棋者
 	 * @return  返回对局势评估的值
 	 */
@@ -529,7 +583,10 @@ public class Ai {
 		}
 		return -rate;
 	}
-
+/**
+ * 为ai的当前局势估分
+ * @return 所估的分数
+ */
 	public int maxRate() {
 		int maxrate = panelRate(Constant.BLACKCHESS);
 		int minrate = panelRate(Constant.WHITECHESS);
