@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.succez.wangzr.wuziqi.algorithm.Ai;
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
+import com.succez.wangzr.wuziqi.tools.Point;
 
 /**
  * 测试Ai类的方法
@@ -185,41 +186,145 @@ public class TestAi extends TestCase {
 	@Test
 	public void testpanelRate() {
 		Ai ai = new Ai();
-		ai.table[7][7]=Constant.BLACKCHESS;
-		ai.table[8][6]=Constant.BLACKCHESS;
-		ai.table[7][8]=Constant.BLACKCHESS;
-		ai.table[7][6]=Constant.BLACKCHESS;
-		ai.table[6][7]=Constant.BLACKCHESS;
-		ai.table[8][5]=Constant.BLACKCHESS;
-		ai.table[6][6]=Constant.BLACKCHESS;
-		ai.table[9][6]=Constant.BLACKCHESS;
-		ai.table[9][7]=Constant.BLACKCHESS;
-		ai.table[9][9]=Constant.BLACKCHESS;
-		ai.table[10][9]=Constant.BLACKCHESS;		
-		
-		ai.table[8][8]=Constant.WHITECHESS;
-		ai.table[6][8]=Constant.WHITECHESS;
-		ai.table[7][9]=Constant.WHITECHESS;
-		ai.table[7][5]=Constant.WHITECHESS;
-		ai.table[6][9]=Constant.WHITECHESS;
-//		ai.table[5][8]=Constant.WHITECHESS;
-		ai.table[8][9]=Constant.WHITECHESS;
-		ai.table[8][7]=Constant.WHITECHESS;
-		ai.table[10][6]=Constant.WHITECHESS;
-		ai.table[5][9]=Constant.WHITECHESS;
-		ai.table[4][9]=Constant.WHITECHESS;
-		
+		ai.table[7][7] = Constant.BLACKCHESS;
+		ai.table[8][6] = Constant.BLACKCHESS;
+		ai.table[7][8] = Constant.BLACKCHESS;
+		ai.table[7][6] = Constant.BLACKCHESS;
+		ai.table[6][7] = Constant.BLACKCHESS;
+		ai.table[8][5] = Constant.BLACKCHESS;
+		ai.table[6][6] = Constant.BLACKCHESS;
+		ai.table[9][6] = Constant.BLACKCHESS;
+		ai.table[9][7] = Constant.BLACKCHESS;
+		ai.table[9][9] = Constant.BLACKCHESS;
+		ai.table[10][9] = Constant.BLACKCHESS;
+
+		ai.table[8][8] = Constant.WHITECHESS;
+		ai.table[6][8] = Constant.WHITECHESS;
+		ai.table[7][9] = Constant.WHITECHESS;
+		ai.table[7][5] = Constant.WHITECHESS;
+		ai.table[6][9] = Constant.WHITECHESS;
+		//		ai.table[5][8]=Constant.WHITECHESS;
+		ai.table[8][9] = Constant.WHITECHESS;
+		ai.table[8][7] = Constant.WHITECHESS;
+		ai.table[10][6] = Constant.WHITECHESS;
+		ai.table[5][9] = Constant.WHITECHESS;
+		ai.table[4][9] = Constant.WHITECHESS;
+
 		int test = ai.panelRate(Constant.BLACKCHESS);
-		assertEquals(ChessStyle.DEAD_4_LIVE_3+20, test);
-		test=ai.panelRate(Constant.WHITECHESS);
+		assertEquals(ChessStyle.DEAD_4_LIVE_3 + 20, test);
+		test = ai.panelRate(Constant.WHITECHESS);
 		assertEquals(-ChessStyle.SUCCESS_5, test);
-	    test=ai.maxRate();
-	    assertEquals(Constant.LOSE, test);
-	    ai.table[5][6]=Constant.BLACKCHESS;
-	    test=ai.maxRate();
-	    assertEquals(Constant.LOSE, test);
-	    ai.table[4][9]=0;
-	    test=ai.maxRate();
-	    assertEquals(Constant.WIN, test);
+		test = ai.maxRate();
+		assertEquals(Constant.LOSE, test);
+		ai.table[5][6] = Constant.BLACKCHESS;
+		test = ai.maxRate();
+		assertEquals(Constant.LOSE, test);
+		ai.table[4][9] = 0;
+		test = ai.maxRate();
+		assertEquals(Constant.WIN, test);
+	}
+
+	@Test
+	public void testDownsizing() {
+		Ai ai = new Ai();
+		Point[] array = { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+				new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), };
+		ai.table[0][1] = Constant.BLACKCHESS;
+		ai.table[0][2] = Constant.BLACKCHESS;
+		ai.table[0][3] = Constant.BLACKCHESS;		
+		ai.table[1][2] = Constant.BLACKCHESS;
+		ai.table[1][3] = Constant.BLACKCHESS;
+		ai.table[1][4] = Constant.BLACKCHESS;
+		Point p=ai.downsizing(array);
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[0];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[1];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[2];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[3];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[4];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[5];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[6];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[7];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[8];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[9];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		
+		
+		ai.table[0][4] = Constant.BLACKCHESS;
+		p=ai.downsizing(array);
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[0];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[1];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[2];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[3];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[4];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[5];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[6];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[7];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[8];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
+		p = array[9];
+		System.out.println(p.rateValue);
+		System.out.println(p.positionX);
+		System.out.println(p.positionY);
 	}
 }
