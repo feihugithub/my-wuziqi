@@ -43,12 +43,12 @@ public class ChessMethod {
 	 * @param space           棋盘的格子间距
 	 * @param radius          棋子的半径
 	 */
-	public void playPToP(int panelLocationX, int panelLocationY, int space, int radius) {
+	public void playPToP(int panelLocationX, int panelLocationY, int space, int radius,int[][] table) {
 		Point p = new Point(panelLocationX, panelLocationY);
 		p = positionTransform(p, space, radius);
 		if (p.positionX != -1) {
-			if (ai.table[p.positionX][p.positionY] == 0) {
-				ai.table[p.positionX][p.positionY] = owner;
+			if (table[p.positionX][p.positionY] == 0) {
+				table[p.positionX][p.positionY] = owner;
 				owner = -owner;
 				if(owner==Constant.BLACKCHESS){
 					methodLogger.info("白棋棋手在({},{})落子",p.positionX,p.positionY);
@@ -60,7 +60,7 @@ public class ChessMethod {
 			else {
 				methodLogger.warn("您没有把棋子下到有效的区域内");
 			}
-			if (isWin(p.positionX, p.positionY))
+			if (isWin(p.positionX, p.positionY,table))
 				winer = -owner;
 		}
 		else{
@@ -77,13 +77,13 @@ public class ChessMethod {
 	 * @param radius          棋子半径
 	 * @return  返回值表明人是否把棋子下到了有效的位置,true表示棋子下到了有效的位置，false表示没有
 	 */
-	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius) {
+	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius,int[][] table) {
 		Point positionP = new Point(panelLocationX, panelLocationY);
 		positionP = positionTransform(positionP, space, radius);
 		if (positionP.positionX != -1) {
-			if (ai.table[positionP.positionX][positionP.positionY] == 0) {
-				ai.table[positionP.positionX][positionP.positionY] = Constant.WHITECHESS;
-				if (isWin(positionP.positionX, positionP.positionY))
+			if (table[positionP.positionX][positionP.positionY] == 0) {
+				table[positionP.positionX][positionP.positionY] = Constant.WHITECHESS;
+				if (isWin(positionP.positionX, positionP.positionY,table))
 					winer = Constant.WHITECHESS;
 				methodLogger.info("棋手在({},{})落子",positionP.positionX,positionP.positionY);
 				owner=-owner;
@@ -100,15 +100,15 @@ public class ChessMethod {
 	/**
 	 * 人机对战是电脑的控制函数
 	 */
-	public void pcPlay() {
+	public void pcPlay(int[][] table) {
 		if (aiLevel == Constant.PRIMARY) {
-			aiPostionP = ai.primaryFind();
+			aiPostionP = ai.primaryFind(table);
 		}
 		else {
-			aiPostionP = ai.advancedFind(3);
+			aiPostionP = ai.advancedFind(3,table);
 		}
-		ai.table[aiPostionP.positionX][aiPostionP.positionY] = Constant.BLACKCHESS;
-		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
+		table[aiPostionP.positionX][aiPostionP.positionY] = Constant.BLACKCHESS;
+		if (isWin(aiPostionP.positionX, aiPostionP.positionY,table)) {
 			winer = Constant.BLACKCHESS;
 		}
 		owner=-owner;
@@ -121,11 +121,11 @@ public class ChessMethod {
 	/**
 	 * 重置棋盘信息
 	 */
-	public void resetChessPanel() {
+	public void resetChessPanel(int[][] table) {
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++)
-				if (ai.table[i][j] != 0)
-					ai.table[i][j] = 0;
+				if (table[i][j] != 0)
+					table[i][j] = 0;
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ChessMethod {
 	 * @param positionY 待判断的当前节点的纵坐标
 	 * @return 返回值是一boolean值，true表示该点使得给用户胜利，false表示没有胜利
 	 */
-	public boolean isWin(int positionX, int positionY) {
+	public boolean isWin(int positionX, int positionY,int[][] table) {
 		/**countH代表横向上的棋子个数*/
 		int countH = 0;
 		/**countS代表竖向上的棋子个数*/
@@ -144,13 +144,13 @@ public class ChessMethod {
 		/**countN代表捺向上棋子的个数*/
 		int countN = 0;
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX + i, positionY))
+			if (compare(positionX, positionY, positionX + i, positionY,table))
 				countH++;
 			else
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX - i, positionY))
+			if (compare(positionX, positionY, positionX - i, positionY,table))
 				countH++;
 			else
 				break;
@@ -158,13 +158,13 @@ public class ChessMethod {
 		if (countH >= 4)
 			return true;
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX, positionY + i))
+			if (compare(positionX, positionY, positionX, positionY + i,table))
 				countS++;
 			else
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX, positionY - i))
+			if (compare(positionX, positionY, positionX, positionY - i,table))
 				countS++;
 			else
 				break;
@@ -172,13 +172,13 @@ public class ChessMethod {
 		if (countS >= 4)
 			return true;
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX + i, positionY - i))
+			if (compare(positionX, positionY, positionX + i, positionY - i,table))
 				countP++;
 			else
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX - i, positionY + i))
+			if (compare(positionX, positionY, positionX - i, positionY + i,table))
 				countP++;
 			else
 				break;
@@ -186,13 +186,13 @@ public class ChessMethod {
 		if (countP >= 4)
 			return true;
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX - i, positionY - i))
+			if (compare(positionX, positionY, positionX - i, positionY - i,table))
 				countN++;
 			else
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			if (compare(positionX, positionY, positionX + i, positionY + i))
+			if (compare(positionX, positionY, positionX + i, positionY + i,table))
 				countN++;
 			else
 				break;
@@ -210,12 +210,12 @@ public class ChessMethod {
 	 * @param nextPositionY      待与当前节点比较的下一个节点的纵坐标
 	 * @return  返回两个节点上棋子颜色的异同情况
 	 */
-	public boolean compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY) {
+	public boolean compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY,int[][] table) {
 		if (nextPositionX < 0 || nextPositionX > 14)
 			return false;
 		else if (nextPositionY < 0 || nextPositionY > 14)
 			return false;
-		else if (ai.table[currentPositionX][currentPositionY] == ai.table[nextPositionX][nextPositionY])
+		else if (table[currentPositionX][currentPositionY] == table[nextPositionX][nextPositionY])
 			return true;
 		return false;
 	}

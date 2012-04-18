@@ -19,18 +19,6 @@ public class Ai {
 	private final static Logger AILO_LOGGER = LoggerFactory.getLogger(Ai.class);
 
 	/**
-	 * 记录棋盘的信息
-	 */
-	public int[][] table = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
-
-	/**
 	 * 比较两个位置的棋子是否相同
 	 * @param currentPositionX  待比较的当前节点的横坐标
 	 * @param currentPositionY  待比较的当前节点的纵坐标
@@ -38,7 +26,7 @@ public class Ai {
 	 * @param nextPositionY     待与当前节点比较的下一个节点的纵坐标 
 	 * @return CROSS_BORDER，SAME，DIFFERENT三种情况之一，分别是越界，相同，不同
 	 */
-	public int compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY) {
+	public int compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY,int[][] table) {
 		if (nextPositionX < 0 || nextPositionX > 14)
 			/**此种情况表明next位置在棋盘的左或者右方向的外部*/
 			return Constant.CROSSBORDER;
@@ -56,7 +44,7 @@ public class Ai {
 	 * @param positionY  待判断的当前节点的纵坐标
 	 * @return  在横方向上对应的棋型
 	 */
-	public int getHorizChessStyle(int positionX, int positionY) {
+	public int getHorizChessStyle(int positionX, int positionY,int[][] table) {
 		/**记录横方向上的连子个数*/
 		int countH = 0;
 		/**记录连子左边的情况，默认为无棋子*/
@@ -70,7 +58,7 @@ public class Ai {
 		 *其中的switch根据comparison的情况设置leftEmpty的值
 		 */
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX - i, positionY);
+			comparison = compare(positionX, positionY, positionX - i, positionY,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					leftEmpty = Constant.CROWD;
@@ -90,7 +78,7 @@ public class Ai {
 		 *其中的switch根据comparison的情况设置rightEmpty的值
 		 */
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX + i, positionY);
+			comparison = compare(positionX, positionY, positionX + i, positionY,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					rightEmpty = Constant.CROWD;
@@ -114,14 +102,14 @@ public class Ai {
 	 * @param positionY 待判断的当前节点的纵坐标
 	 * @return  在竖方向上对应的棋型
 	 */
-	public int getVertChessStyle(int positionX, int positionY) {
+	public int getVertChessStyle(int positionX, int positionY,int[][] table) {
 		int countS = 0;
 		int leftEmpty = Constant.EMPTY;
 		int rightEmpty = Constant.EMPTY;
 		int comparison = Constant.DIFFERENT;
 
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX, positionY - i);
+			comparison = compare(positionX, positionY, positionX, positionY - i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					leftEmpty = Constant.CROWD;
@@ -137,7 +125,7 @@ public class Ai {
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX, positionY + i);
+			comparison = compare(positionX, positionY, positionX, positionY + i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					rightEmpty = Constant.CROWD;
@@ -163,14 +151,14 @@ public class Ai {
 	 * @param positionY  待判断的当前节点的纵坐标
 	 * @return  在撇方向上对应的棋型
 	 */
-	public int getPChessStyle(int positionX, int positionY) {
+	public int getPChessStyle(int positionX, int positionY,int[][] table) {
 		int countP = 0;
 		int leftEmpty = Constant.EMPTY;
 		int rightEmpty = Constant.EMPTY;
 		int comparison = Constant.DIFFERENT;
 
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX - i, positionY + i);
+			comparison = compare(positionX, positionY, positionX - i, positionY + i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					leftEmpty = Constant.CROWD;
@@ -186,7 +174,7 @@ public class Ai {
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX + i, positionY - i);
+			comparison = compare(positionX, positionY, positionX + i, positionY - i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					rightEmpty = Constant.CROWD;
@@ -212,14 +200,14 @@ public class Ai {
 	 * @param positionY 待判断的当前节点的纵坐标
 	 * @return  在捺方向上对应的棋型
 	 */
-	public int getNChessStyle(int positionX, int positionY) {
+	public int getNChessStyle(int positionX, int positionY,int[][] table) {
 		int countN = 0;
 		int leftEmpty = Constant.EMPTY;
 		int rightEmpty = Constant.EMPTY;
 		int comparison = Constant.DIFFERENT;
 
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX - i, positionY - i);
+			comparison = compare(positionX, positionY, positionX - i, positionY - i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					leftEmpty = Constant.CROWD;
@@ -235,7 +223,7 @@ public class Ai {
 				break;
 		}
 		for (int i = 1; i != 5; i++) {
-			comparison = compare(positionX, positionY, positionX + i, positionY + i);
+			comparison = compare(positionX, positionY, positionX + i, positionY + i,table);
 			switch (comparison) {
 				case Constant.CROSSBORDER:
 					rightEmpty = Constant.CROWD;
@@ -302,13 +290,13 @@ public class Ai {
 	 * @param positionY 待打分的节点的纵坐标
 	 * @return  该节点考虑了四个方向以后的棋型
 	 */
-	public int positionRate(int positionX, int positionY) {
+	public int positionRate(int positionX, int positionY,int[][] table) {
 		/**用于记录四个方向中最好的两个棋型*/
 		int[] temp = { -1, -1 };
 		/**考虑了两个方向的棋型的估值*/
 		int two = 0;
 		/**记录了某个方向的棋型*/
-		int situation = getHorizChessStyle(positionX, positionY);
+		int situation = getHorizChessStyle(positionX, positionY,table);
 		/**
 		 * switch中假若有某一个方向落子后形成了成五或者活四，就不用再考虑多方向的情况了，直接返回。
 		 * 若不是就要把四个方向中最好的两个棋型记录在temp数组中，且保持由大到小的顺序
@@ -327,7 +315,7 @@ public class Ai {
 					temp[1] = situation;
 				}
 		}
-		situation = getVertChessStyle(positionX, positionY);
+		situation = getVertChessStyle(positionX, positionY,table);
 		switch (situation) {
 			case ChessStyle.SUCCESS_5:
 				return ChessStyle.SUCCESS_5;
@@ -342,7 +330,7 @@ public class Ai {
 					temp[1] = situation;
 				}
 		}
-		situation = getPChessStyle(positionX, positionY);
+		situation = getPChessStyle(positionX, positionY,table);
 		switch (situation) {
 			case ChessStyle.SUCCESS_5:
 				return ChessStyle.SUCCESS_5;
@@ -357,7 +345,7 @@ public class Ai {
 					temp[1] = situation;
 				}
 		}
-		situation = getNChessStyle(positionX, positionY);
+		situation = getNChessStyle(positionX, positionY,table);
 		switch (situation) {
 			case ChessStyle.SUCCESS_5:
 				return ChessStyle.SUCCESS_5;
@@ -398,7 +386,7 @@ public class Ai {
 	 * 取这两个值中的最大值为该点的估分值，遍历table找出其中没有下棋的点中的估分最大的点。
 	 * @return  查找到的点
 	 */
-	public Point primaryFind() {
+	public Point primaryFind(int[][] table) {
 		/**记录最大估分值*/
 		int maxscore = -1;
 		int tempscore = 0;
@@ -407,14 +395,14 @@ public class Ai {
 			for (int j = 0; j != 14; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
-					tempscore = positionRate(i, j);
+					tempscore = positionRate(i, j,table);
 					if (tempscore > maxscore) {
 						maxscore = tempscore;
 						maxPositionX = i;
 						maxPositionY = j;
 					}
 					table[i][j] = Constant.BLACKCHESS;
-					tempscore = positionRate(i, j) + 1;
+					tempscore = positionRate(i, j,table) + 1;
 					if (tempscore > maxscore) {
 						maxscore = tempscore;
 						maxPositionX = i;
@@ -602,21 +590,21 @@ public class Ai {
 	 * 高级Ai查找最优下棋点
 	 * @return 查找到的最优下棋点
 	 */
-	public Point advancedFind(int depth) {
+	public Point advancedFind(int depth,int[][] table) {
 		Point point = new Point(-1, -1);
 		int max = -2000;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
-					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+					if (positionRate(i, j,table) == ChessStyle.SUCCESS_5) {
 						point.positionX = i;
 						point.positionY = j;
 						table[i][j] = 0;
 						return point;
 					}
 					else {
-						int backValue = minSearch(depth-1,max);
+						int backValue = minSearch(depth-1,max,table);
 						if (backValue > max) {
 							max = backValue;
 							point.positionX = i;
@@ -634,7 +622,7 @@ public class Ai {
 	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
 	 * @return  该棋局的子节点的最大的回溯值
 	 */
-	private int maxSearch(int depth,int α) {
+	private int maxSearch(int depth,int α,int[][] table) {
 		int max = -2000;
 		int backValue;
 		for (int i = 0; i != 15; i++)
@@ -642,10 +630,10 @@ public class Ai {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
 					if(depth==1){
-						backValue= maxRate();
+						backValue= maxRate(table);
 					}
 					else {
-						backValue=minSearch(depth-1,max);
+						backValue=minSearch(depth-1,max,table);
 					}
 					/**
 					 * α剪枝
@@ -666,7 +654,7 @@ public class Ai {
 	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
 	 * @return 该棋局的子节点的最小的回溯值
 	 */
-	private int minSearch(int depth,int β) {
+	private int minSearch(int depth,int β,int[][] table) {
 		int min = 2000;
 		int backValue;
 		for (int i = 0; i != 15; i++)
@@ -674,10 +662,10 @@ public class Ai {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
 					if (depth == 1) {
-						backValue = maxRate();
+						backValue = maxRate(table);
 					}
 					else {
-						backValue = maxSearch(depth-1,min);
+						backValue = maxSearch(depth-1,min,table);
 					}
 					/**
 					 * β剪枝
@@ -699,12 +687,12 @@ public class Ai {
 	 * @param color  指定执棋者
 	 * @return  返回对局势评估的值
 	 */
-	public int panelRate(int color) {
+	public int panelRate(int color,int[][] table) {
 		int rate = -1000;
 		for (int i = 0; i < 15; i++) {
 			for (int j = 0; j < 15; j++) {
 				if (table[i][j] == color) {
-					int temp = positionRate(i, j);
+					int temp = positionRate(i, j,table);
 					if (temp > rate) {
 						rate = temp;
 					}
@@ -721,9 +709,9 @@ public class Ai {
 	 * 为ai的当前局势估分
 	 * @return 所估的分数
 	 */
-	public int maxRate() {
-		int maxrate = panelRate(Constant.BLACKCHESS);
-		int minrate = panelRate(Constant.WHITECHESS)+5;
+	public int maxRate(int[][] table) {
+		int maxrate = panelRate(Constant.BLACKCHESS,table);
+		int minrate = panelRate(Constant.WHITECHESS,table)+5;
 		int situation = maxrate + minrate;
 		if (maxrate >= ChessStyle.LIVE_4 && minrate > -ChessStyle.LIVE_4)
 			situation = Constant.WIN;

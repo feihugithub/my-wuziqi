@@ -92,18 +92,18 @@ public class ChessPanel extends JPanel {
 			// TODO Auto-generated method stub
 			if (chessMethod.winer == 0 && runTimeStatus == Constant.RUN) {
 				if (chessMethod.gameMode == Constant.PTOP) {
-					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
+					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius,table);
 					repaint();
 				}
 				else {
-					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
+					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius,table);
 					repaint();
 					if (b && chessMethod.winer == 0) {
 						aiTimer.schedule(new TimerTask() {
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								chessMethod.pcPlay();
+								chessMethod.pcPlay(table);
 								repaint();
 							}
 						}, 500);
@@ -130,6 +130,18 @@ public class ChessPanel extends JPanel {
 
 		}
 	};
+
+	/**
+	 * 记录棋盘的信息
+	 */
+	public int[][] table = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 
 	/**
 	 * 棋盘重绘时调用该函数，每次有人落子后重绘
@@ -197,11 +209,11 @@ public class ChessPanel extends JPanel {
 	private void paintChess(Graphics g) {
 		for (int i = gridSpace; i != chessPanelWidth; i = i + gridSpace)
 			for (int j = gridSpace; j != chessPanelheight; j = j + gridSpace) {
-				if (chessMethod.ai.table[i / gridSpace - 1][j / gridSpace - 1] == Constant.BLACKCHESS) {
+				if (table[i / gridSpace - 1][j / gridSpace - 1] == Constant.BLACKCHESS) {
 					g.setColor(Color.black);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}
-				else if (chessMethod.ai.table[i / gridSpace - 1][j / gridSpace - 1] == Constant.WHITECHESS) {
+				else if (table[i / gridSpace - 1][j / gridSpace - 1] == Constant.WHITECHESS) {
 					g.setColor(Color.white);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}

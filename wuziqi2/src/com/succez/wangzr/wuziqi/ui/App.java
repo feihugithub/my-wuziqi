@@ -56,7 +56,7 @@ public class App extends JFrame {
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
 			if (chessPanel.chessMethod.gameMode == Constant.PTOPC && firsthand == Constant.PCFIRST) {
-				chessPanel.chessMethod.ai.table[7][7] = Constant.BLACKCHESS;
+				chessPanel.table[7][7] = Constant.BLACKCHESS;
 				chessPanel.chessMethod.owner=-chessPanel.chessMethod.owner;
 			}
 			chessPanel.paint(chessPanel.getGraphics());
@@ -131,7 +131,7 @@ public class App extends JFrame {
 			chessPanel.runTimeStatus = Constant.STOP;
 			btnStart.setVisible(true);
 			/**重置棋盘信息*/
-			chessPanel.chessMethod.resetChessPanel();
+			chessPanel.chessMethod.resetChessPanel(chessPanel.table);
 			chessPanel.repaint();
 			chessPanel.showwiner();
 			btnReset.setVisible(false);
