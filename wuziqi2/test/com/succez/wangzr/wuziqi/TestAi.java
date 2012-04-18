@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.succez.wangzr.wuziqi.algorithm.Ai;
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
-import com.succez.wangzr.wuziqi.tools.Point;
 
 /**
  * 测试Ai类的方法

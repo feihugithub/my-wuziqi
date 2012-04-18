@@ -519,89 +519,7 @@ public class Ai {
 //		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
 //		return point;
 //	}
-//改正后的极小极大算法，是递归形式的，未剪枝。
-	public Point advancedFind(int depth) {
-		Point point = new Point(-1, -1);
-		int max = -2000;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++) {
-				if (table[i][j] == 0) {
-					table[i][j] = Constant.BLACKCHESS;
-					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
-						point.positionX = i;
-						point.positionY = j;
-						table[i][j] = 0;
-						return point;
-					}
-					else {
-						int backValue = minSearch(depth-1);
-						if (backValue > max) {
-							max = backValue;
-							point.positionX = i;
-							point.positionY = j;
-						}
-						table[i][j] = 0;
-					}
-				}
-			}
-		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
-		return point;
-	}
-
-	/**
-	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
-	 * @return  该棋局的子节点的最大的回溯值
-	 */
-	private int maxSearch(int depth) {
-		int max = -2000;
-		int backValue;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++)
-				if (table[i][j] == 0) {
-					table[i][j] = Constant.BLACKCHESS;
-					if(depth==1){
-						backValue= maxRate();
-					}
-					else {
-						backValue=minSearch(depth-1);
-					}
-					if (backValue > max) {
-						max = backValue;
-					}
-					table[i][j] = 0;
-				}
-		return max;
-	}
-
-	/**
-	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
-	 * @return 该棋局的子节点的最小的回溯值
-	 */
-	private int minSearch(int depth) {
-		int min = 2000;
-		int backValue;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++) {
-				if (table[i][j] == 0) {
-					table[i][j] = Constant.WHITECHESS;
-					if (depth == 1) {
-						backValue = maxRate();
-					}
-					else {
-						backValue = maxSearch(depth-1);
-					}
-					if (backValue < min) {
-						min = backValue;
-					}
-					table[i][j] = 0;
-				}
-			}
-		return min;
-	}
-//	/**
-//	 * 高级Ai查找最优下棋点
-//	 * @return 查找到的最优下棋点
-//	 */
+////改正后的极小极大算法，是递归形式的，未剪枝。
 //	public Point advancedFind(int depth) {
 //		Point point = new Point(-1, -1);
 //		int max = -2000;
@@ -616,7 +534,7 @@ public class Ai {
 //						return point;
 //					}
 //					else {
-//						int backValue = minSearch(depth-1,max);
+//						int backValue = minSearch(depth-1);
 //						if (backValue > max) {
 //							max = backValue;
 //							point.positionX = i;
@@ -634,7 +552,7 @@ public class Ai {
 //	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
 //	 * @return  该棋局的子节点的最大的回溯值
 //	 */
-//	private int maxSearch(int depth,int α) {
+//	private int maxSearch(int depth) {
 //		int max = -2000;
 //		int backValue;
 //		for (int i = 0; i != 15; i++)
@@ -645,14 +563,7 @@ public class Ai {
 //						backValue= maxRate();
 //					}
 //					else {
-//						backValue=minSearch(depth-1,max);
-//					}
-//					/**
-//					 * α剪枝
-//					 */
-//					if(backValue>=α){
-//						table[i][j]=0;
-//						return backValue;
+//						backValue=minSearch(depth-1);
 //					}
 //					if (backValue > max) {
 //						max = backValue;
@@ -666,7 +577,7 @@ public class Ai {
 //	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
 //	 * @return 该棋局的子节点的最小的回溯值
 //	 */
-//	private int minSearch(int depth,int β) {
+//	private int minSearch(int depth) {
 //		int min = 2000;
 //		int backValue;
 //		for (int i = 0; i != 15; i++)
@@ -677,14 +588,7 @@ public class Ai {
 //						backValue = maxRate();
 //					}
 //					else {
-//						backValue = maxSearch(depth-1,min);
-//					}
-//					/**
-//					 * β剪枝
-//					 */
-//					if(backValue<=β){
-//						table[i][j]=0;
-//						return backValue;
+//						backValue = maxSearch(depth-1);
 //					}
 //					if (backValue < min) {
 //						min = backValue;
@@ -694,6 +598,102 @@ public class Ai {
 //			}
 //		return min;
 //	}
+	/**
+	 * 高级Ai查找最优下棋点
+	 * @return 查找到的最优下棋点
+	 */
+	public Point advancedFind(int depth) {
+		Point point = new Point(-1, -1);
+		int max = -2000;
+		for (int i = 0; i != 15; i++)
+			for (int j = 0; j != 15; j++) {
+				if (table[i][j] == 0) {
+					table[i][j] = Constant.BLACKCHESS;
+					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+						point.positionX = i;
+						point.positionY = j;
+						table[i][j] = 0;
+						return point;
+					}
+					else {
+						int backValue = minSearch(depth-1,max);
+						if (backValue > max) {
+							max = backValue;
+							point.positionX = i;
+							point.positionY = j;
+						}
+						table[i][j] = 0;
+					}
+				}
+			}
+		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
+		return point;
+	}
+
+	/**
+	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
+	 * @return  该棋局的子节点的最大的回溯值
+	 */
+	private int maxSearch(int depth,int α) {
+		int max = -2000;
+		int backValue;
+		for (int i = 0; i != 15; i++)
+			for (int j = 0; j != 15; j++)
+				if (table[i][j] == 0) {
+					table[i][j] = Constant.BLACKCHESS;
+					if(depth==1){
+						backValue= maxRate();
+					}
+					else {
+						backValue=minSearch(depth-1,max);
+					}
+					/**
+					 * α剪枝
+					 */
+					if(backValue>=α){
+						table[i][j]=0;
+						return backValue;
+					}
+					if (backValue > max) {
+						max = backValue;
+					}
+					table[i][j] = 0;
+				}
+		return max;
+	}
+
+	/**
+	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
+	 * @return 该棋局的子节点的最小的回溯值
+	 */
+	private int minSearch(int depth,int β) {
+		int min = 2000;
+		int backValue;
+		for (int i = 0; i != 15; i++)
+			for (int j = 0; j != 15; j++) {
+				if (table[i][j] == 0) {
+					table[i][j] = Constant.WHITECHESS;
+					if (depth == 1) {
+						backValue = maxRate();
+					}
+					else {
+						backValue = maxSearch(depth-1,min);
+					}
+					/**
+					 * β剪枝
+					 */
+					if(backValue<=β){
+						table[i][j]=0;
+						return backValue;
+					}
+					if (backValue < min) {
+						min = backValue;
+					}
+					table[i][j] = 0;
+				}
+			}
+		return min;
+	}
 	/**
 	 * 对某一个棋盘，根据参数给定的执棋者，找出其中估值最大的点的估值
 	 * @param color  指定执棋者
@@ -722,8 +722,8 @@ public class Ai {
 	 * @return 所估的分数
 	 */
 	public int maxRate() {
-		int maxrate = panelRate(Constant.BLACKCHESS)+5;
-		int minrate = panelRate(Constant.WHITECHESS);
+		int maxrate = panelRate(Constant.BLACKCHESS);
+		int minrate = panelRate(Constant.WHITECHESS)+5;
 		int situation = maxrate + minrate;
 		if (maxrate >= ChessStyle.LIVE_4 && minrate > -ChessStyle.LIVE_4)
 			situation = Constant.WIN;
