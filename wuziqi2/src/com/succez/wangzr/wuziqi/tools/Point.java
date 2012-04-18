@@ -1,7 +1,7 @@
 package com.succez.wangzr.wuziqi.tools;
 
 /**
- * 构造此数据结构方便Ai查找算法返回最优点的坐标
+ * 构造此数据结构方便AI查找算法返回最优点的坐标
  */
 public class Point {
 	public int positionX;

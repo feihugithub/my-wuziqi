@@ -68,7 +68,7 @@ public class ChessPanel extends JPanel {
 		txtShower.setHorizontalAlignment(JTextField.CENTER);
 		txtShower.setEditable(false);
 		txtShower.setBorder(BorderFactory.createEmptyBorder());
-		txtShower.setPreferredSize(new Dimension(400, 30));
+		txtShower.setPreferredSize(new Dimension(300, 30));
 		txtShower.setBackground(Color.gray);
 		txtShower.setFont(new Font("楷体", Font.PLAIN, 20));
 		this.setPreferredSize(new Dimension(chessPanelWidth, chessPanelheight));
@@ -138,36 +138,42 @@ public class ChessPanel extends JPanel {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());// 不清楚
 		g.setColor(Color.black);
-		paintPad(g);
+		paintPanel(g);
 		paintChess(g);
 		showwiner();
 	}
 
 	/**
-	 * 显示胜利者
+	 * 显示提示信息
 	 */
 	public void showwiner() {
 		if (runTimeStatus == Constant.RUN) {
-			if (chessMethod.winer == Constant.BLACKCHESS){
-				txtShower.setText("胜利者是黑棋棋手");
-			}
-			else if (chessMethod.winer == Constant.WHITECHESS){
-				txtShower.setText("胜利者是白棋棋手");
-			}
-			else if (chessMethod.gameMode == Constant.PTOPC) {
-				if (chessMethod.owner == Constant.BLACKCHESS)
+			if (chessMethod.gameMode == Constant.PTOPC) {
+				if (chessMethod.winer == Constant.BLACKCHESS) {
+					txtShower.setText("遗憾！您输了");
+				}
+				else if (chessMethod.winer == Constant.WHITECHESS) {
+					txtShower.setText("恭喜！您获胜了");
+				}
+				else if (chessMethod.owner == Constant.BLACKCHESS)
 					txtShower.setText("电脑正在思考，请耐心等待！");
 				else if (chessMethod.owner == Constant.WHITECHESS)
 					txtShower.setText("该您下棋");
 			}
 			else if (chessMethod.gameMode == Constant.PTOP) {
-				if (chessMethod.owner == Constant.BLACKCHESS)
+				if (chessMethod.winer == Constant.BLACKCHESS) {
+					txtShower.setText("恭喜黑棋棋手，您获胜了");
+				}
+				else if (chessMethod.winer == Constant.WHITECHESS) {
+					txtShower.setText("恭喜白棋棋手，您获胜了");
+				}
+				else if (chessMethod.owner == Constant.BLACKCHESS)
 					txtShower.setText("请黑棋棋手下棋");
-				else
+				else if (chessMethod.owner == Constant.WHITECHESS)
 					txtShower.setText("请白棋棋手下棋");
 			}
 		}
-		else{
+		else {
 			txtShower.setText("");
 		}
 
@@ -177,7 +183,7 @@ public class ChessPanel extends JPanel {
 	 * 绘制棋盘
 	 * @param g
 	 */
-	private void paintPad(Graphics g) {
+	private void paintPanel(Graphics g) {
 		for (int i = gridSpace; i != chessPanelWidth; i = i + gridSpace)
 			g.drawLine(i, gridSpace, i, chessPanelheight - gridSpace);
 		for (int j = gridSpace; j != chessPanelheight; j = j + gridSpace)

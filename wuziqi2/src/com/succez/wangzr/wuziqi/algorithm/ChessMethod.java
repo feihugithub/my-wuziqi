@@ -105,7 +105,7 @@ public class ChessMethod {
 			aiPostionP = ai.primaryFind();
 		}
 		else {
-			aiPostionP = ai.advancedFind();
+			aiPostionP = ai.advancedFind(3);
 		}
 		ai.table[aiPostionP.positionX][aiPostionP.positionY] = Constant.BLACKCHESS;
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {

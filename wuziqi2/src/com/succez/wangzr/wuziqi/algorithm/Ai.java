@@ -433,107 +433,142 @@ public class Ai {
 	 * 缩减博弈树规模
 	 * @return 返回一个有10个较好考察点的数组
 	 */
-	public Point downsizing(Point[] array) {
-		Point p = new Point(-1, -1);
-		for (int i = 0; i != 15; i++) {
-			for (int j = 0; j != 15; j++) {
-				if (table[i][j] == 0) {
-					table[i][j] = Constant.BLACKCHESS;
-					int temp = positionRate(i, j);
-					if (temp == ChessStyle.SUCCESS_5) {
-						p = new Point(i, j, temp);
-						return p;
-					}
-					if (temp > array[9].rateValue) {
-						array[9] = new Point(i, j, temp);
-						for (int k = 9; k > 0; k--) {
-							if (array[k].rateValue > array[k - 1].rateValue) {
-								Point point = array[k];
-								array[k] = array[k - 1];
-								array[k - 1] = point;
-							}
-							else {
-								break;
-							}
-						}
-					}
-					table[i][j] = 0;
-				}
-			}
-		}
-		return p;
-	}
+//	public Point downsizing(Point[] array) {	
+//		Point p = new Point(-1, -1);
+//		for (int i = 0; i != 15; i++) {
+//			for (int j = 0; j != 15; j++) {
+//				if (table[i][j] == 0) {
+//					table[i][j] = Constant.BLACKCHESS;
+//					int temp = positionRate(i, j);
+//					if (temp == ChessStyle.SUCCESS_5) {
+//						p = new Point(i, j, temp);
+//						table[i][j] = 0;
+//						return p;
+//					}
+//					if (temp > array[9].rateValue) {
+//						array[9] = new Point(i, j, temp);
+//						for (int k = 9; k > 0; k--) {
+//							if (array[k].rateValue > array[k - 1].rateValue) {
+//								Point point = array[k];
+//								array[k] = array[k - 1];
+//								array[k - 1] = point;
+//							}
+//							else {
+//								break;
+//							}
+//						}
+//					}
+//					table[i][j] = 0;
+//				}
+//			}
+//		}
+//		return p;
+//	}
 
 	/**
 	 * 高级Ai查找最优下棋点
 	 * @return 查找到的最优下棋点
 	 */
-	public Point advancedFind() {
-		Point backPoint = new Point(-1, -1, -2000);
-		Point[] array = { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
-				new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), };
-		Point point = downsizing(array);
-		if (point.positionX == -1) {
-			for (int i = 0; i != 10; i++) {
-				table[array[i].positionX][array[i].positionY] = Constant.BLACKCHESS;
-				int backValue = maxSearch();
-				if (backValue > backPoint.rateValue) {
-					backPoint.rateValue = backValue;
-					backPoint.positionX = array[i].positionX;
-					backPoint.positionY = array[i].positionY;
-				}
-				table[array[i].positionX][array[i].positionY] = 0;
-			}
-			AILO_LOGGER.info("ai找到的点的回溯值是:{}", backPoint.rateValue);
-			AILO_LOGGER.info("ai找到的点是:({},{})", backPoint.positionX,backPoint.positionY);
-			return backPoint;
-		}
-		else {
-			return point;
-		}
-	}
+//	public Point advancedFind() {
+//		Point backPoint = new Point(-1, -1, -2000);
+//		Point[] array = { new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+//				new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), };
+//		Point point = downsizing(array);
+//		if (point.positionX == -1) {
+//			for (int i = 0; i != 10; i++) {
+//				if (table[array[i].positionX][array[i].positionY] == 0) {
+//					table[array[i].positionX][array[i].positionY] = Constant.BLACKCHESS;
+//					int backValue = maxSearch();
+//					if (backValue > backPoint.rateValue) {
+//						backPoint.rateValue = backValue;
+//						backPoint.positionX = array[i].positionX;
+//						backPoint.positionY = array[i].positionY;
+//					}
+//					table[array[i].positionX][array[i].positionY] = 0;
+//				}
+//			}
+//			AILO_LOGGER.info("ai找到的点的回溯值是:{}", backPoint.rateValue);
+//			return backPoint;
+//		}
+//		else {
+//			return point;
+//		}
+//	}
 
-	//	public Point advancedFind() {
-	//		Point point = new Point(-1, -1);
-	//		int max = -1000;
-	//		for (int i = 0; i != 15; i++)
-	//			for (int j = 0; j != 15; j++) {
-	//				if (table[i][j] == 0) {
-	//					table[i][j] = Constant.BLACKCHESS;
-	//					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
-	//						point.positionX = i;
-	//						point.positionY = j;
-	//						table[i][j] = 0;
-	//						return point;
-	//					}
-	//					else {
-	//						int backValue = maxSearch();
-	//						if (backValue > max) {
-	//							max = backValue;
-	//							point.positionX = i;
-	//							point.positionY = j;
-	//						}
-	//						table[i][j] = 0;
-	//					}
-	//				}
-	//			}
-	//		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
-	//		return point;
-	//	}
+//	public Point advancedFind() {
+//		Point point = new Point(-1, -1);
+//		int max = -1000;
+//		for (int i = 0; i != 15; i++)
+//			for (int j = 0; j != 15; j++) {
+//				if (table[i][j] == 0) {
+//					table[i][j] = Constant.BLACKCHESS;
+//					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+//						point.positionX = i;
+//						point.positionY = j;
+//						table[i][j] = 0;
+//						return point;
+//					}
+//					else {
+//						int backValue = maxSearch();
+//						if (backValue > max) {
+//							max = backValue;
+//							point.positionX = i;
+//							point.positionY = j;
+//						}
+//						table[i][j] = 0;
+//					}
+//				}
+//			}
+//		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
+//		return point;
+//	}
+	public Point advancedFind(int depth) {
+		Point point = new Point(-1, -1);
+		int max = -2000;
+		for (int i = 0; i != 15; i++)
+			for (int j = 0; j != 15; j++) {
+				if (table[i][j] == 0) {
+					table[i][j] = Constant.BLACKCHESS;
+					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+						point.positionX = i;
+						point.positionY = j;
+						table[i][j] = 0;
+						return point;
+					}
+					else {
+						int backValue = minSearch(depth-1);
+						if (backValue > max) {
+							max = backValue;
+							point.positionX = i;
+							point.positionY = j;
+						}
+						table[i][j] = 0;
+					}
+				}
+			}
+		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
+		return point;
+	}
 
 	/**
 	 * 求取棋手落子后棋局的回溯值，该回溯值死其子节点的回溯值的最大值，其子节点是ai下棋后的棋局
 	 * @return  该棋局的子节点的最大的回溯值
 	 */
-	private int maxSearch() {
-		int max = -1000;
+	private int maxSearch(int depth) {
+		int max = -2000;
+		int backValue;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++)
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
-					int rate = minSearch(max);
-					if (rate > max) {
-						max = rate;
+					if(depth==1){
+						backValue= maxRate();
+					}
+					else {
+						backValue=minSearch(depth-1);
+					}
+					if (backValue > max) {
+						max = backValue;
 					}
 					table[i][j] = 0;
 				}
@@ -544,19 +579,18 @@ public class Ai {
 	 * 求取ai落子后棋局的回溯值，该回溯值是其子节点的回溯值的最小值，其子节点是棋手下棋后的棋局
 	 * @return 该棋局的子节点的最小的回溯值
 	 */
-	private int minSearch(int α) {
-		int min = 1000;
+	private int minSearch(int depth) {
+		int min = 2000;
+		int backValue;
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
-					int backValue = maxRate();
-					/**
-					 * α剪枝
-					 */
-					if (backValue < α) {
-						table[i][j] = 0;
-						return backValue;
+					if (depth == 1) {
+						backValue = maxRate();
+					}
+					else {
+						backValue = maxSearch(depth-1);
 					}
 					if (backValue < min) {
 						min = backValue;
@@ -596,11 +630,11 @@ public class Ai {
 	 */
 	public int maxRate() {
 		int maxrate = panelRate(Constant.BLACKCHESS);
-		int minrate = panelRate(Constant.WHITECHESS);
+		int minrate = panelRate(Constant.WHITECHESS) + 5;
 		int situation = maxrate + minrate;
-		if (maxrate >= ChessStyle.LIVE_4 && minrate >= -ChessStyle.LIVE_4)
+		if (maxrate >= ChessStyle.LIVE_4 && minrate > -ChessStyle.LIVE_4)
 			situation = Constant.WIN;
-		else if (minrate <= -ChessStyle.LIVE_4)
+		else if (minrate <= -ChessStyle.LIVE_3)
 			situation = Constant.LOSE;
 		return situation;
 	}
