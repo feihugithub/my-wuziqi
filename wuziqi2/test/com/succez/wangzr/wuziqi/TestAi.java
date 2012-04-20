@@ -1,7 +1,9 @@
 package com.succez.wangzr.wuziqi;
 
-import junit.framework.TestCase;
 import org.junit.Test;
+
+import junit.framework.TestCase;
+
 import com.succez.wangzr.wuziqi.algorithm.Ai;
 import com.succez.wangzr.wuziqi.tools.ChessStyle;
 import com.succez.wangzr.wuziqi.tools.Constant;
