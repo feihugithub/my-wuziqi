@@ -39,7 +39,7 @@ public interface Constant {
 	/**表示对弈正在进行*/
 	public static final int RUN = 1;
 
-	/**表示对弈结束或者还没有开始*/
+	/**表示对弈还没有开始*/
 	public static final int STOP = -1;
 
 	/**双人对战*/
@@ -54,8 +54,10 @@ public interface Constant {
 	/**高级电脑*/
 	public static final int ADVANCE = -1;
 
+	/**博弈树终局状态必胜*/
 	public static final int WIN = 1000;
 
+	/**博弈树终局状态必败*/
 	public static final int LOSE = -1000;
 
 }

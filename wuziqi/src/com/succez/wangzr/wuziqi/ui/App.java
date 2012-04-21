@@ -19,9 +19,7 @@ import com.succez.wangzr.wuziqi.tools.SwingConsole;
  * @createdate 2012-4-1
  */
 public class App extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	/**棋盘*/
@@ -52,12 +50,12 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			chessPanel.runTimeStatus = Constant.RUN;
+			chessPanel.setRunTimeStatus(Constant.RUN);
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
-			if (chessPanel.chessMethod.gameMode == Constant.PTOPC && firsthand == Constant.PCFIRST) {
-				chessPanel.table[7][7] = Constant.BLACKCHESS;
-				chessPanel.chessMethod.owner=-chessPanel.chessMethod.owner;
+			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC && firsthand == Constant.PCFIRST) {
+				chessPanel.getchessMethod().setable(7, 7, Constant.BLACKCHESS);
+				chessPanel.getchessMethod().setOwner(-chessPanel.getchessMethod().getOwner());
 			}
 			chessPanel.paint(chessPanel.getGraphics());
 		}
@@ -70,9 +68,9 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (chessPanel.runTimeStatus == Constant.STOP){
-				chessPanel.chessMethod.aiLevel = -chessPanel.chessMethod.aiLevel;
-				if (chessPanel.chessMethod.aiLevel == Constant.PRIMARY) {
+			if (chessPanel.getRunTimeStatus() == Constant.STOP) {
+				chessPanel.getchessMethod().setAiLevel(-chessPanel.getchessMethod().getAiLevel());
+				if (chessPanel.getchessMethod().getAiLevel() == Constant.PRIMARY) {
 					btnLevel.setText("初级");
 				}
 				else {
@@ -89,9 +87,9 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (chessPanel.runTimeStatus == Constant.STOP) {
-				chessPanel.chessMethod.gameMode = -chessPanel.chessMethod.gameMode;
-				if (chessPanel.chessMethod.gameMode == Constant.PTOP) {
+			if (chessPanel.getRunTimeStatus() == Constant.STOP) {
+				chessPanel.getchessMethod().setGameMode(-chessPanel.getchessMethod().getGameMode());
+				if (chessPanel.getchessMethod().getGameMode() == Constant.PTOP) {
 					btnMode.setText("双人对战");
 					btnUphand.setVisible(false);
 					btnLevel.setVisible(false);
@@ -114,26 +112,25 @@ public class App extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			/**重置胜利者信息*/
-			chessPanel.chessMethod.winer = 0;
+			chessPanel.getchessMethod().setWiner(0);
 			/**重置双人对战时下棋所有权*/
-			if(chessPanel.chessMethod.gameMode==Constant.PTOP){
-				chessPanel.chessMethod.owner = Constant.BLACKCHESS;
+			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOP) {
+				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 			}
 			else {
-				if(firsthand==Constant.PCFIRST){
-					chessPanel.chessMethod.owner = Constant.BLACKCHESS;
+				if (firsthand == Constant.PCFIRST) {
+					chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 				}
 				else {
-					chessPanel.chessMethod.owner = Constant.WHITECHESS;
+					chessPanel.getchessMethod().setOwner(Constant.WHITECHESS);
 				}
 			}
 			/** 重置现在运行情况*/
-			chessPanel.runTimeStatus = Constant.STOP;
+			chessPanel.setRunTimeStatus(Constant.STOP);
 			btnStart.setVisible(true);
 			/**重置棋盘信息*/
-			chessPanel.chessMethod.resetChessPanel(chessPanel.table);
+			chessPanel.getchessMethod().resetChessPanel();
 			chessPanel.repaint();
-			chessPanel.showwiner();
 			btnReset.setVisible(false);
 		}
 	};
@@ -145,18 +142,18 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (chessPanel.runTimeStatus == Constant.STOP){
+			if (chessPanel.getRunTimeStatus() == Constant.STOP) {
 				firsthand = -firsthand;
 				if (firsthand == Constant.PCFIRST) {
 					btnUphand.setText("电脑先下");
-					chessPanel.chessMethod.owner=Constant.BLACKCHESS;
+					chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 				}
-				else{
+				else {
 					btnUphand.setText("棋手先下");
-					chessPanel.chessMethod.owner=Constant.WHITECHESS;
+					chessPanel.getchessMethod().setOwner(Constant.WHITECHESS);
 				}
-					
-			}	
+
+			}
 		}
 	};
 

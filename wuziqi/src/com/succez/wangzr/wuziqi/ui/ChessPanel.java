@@ -26,19 +26,19 @@ import com.succez.wangzr.wuziqi.tools.Constant;
  */
 public class ChessPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**棋盘算法*/
-	public ChessMethod chessMethod;
+	private ChessMethod chessMethod;
 
 	/**显示输赢的编辑框*/
 	private JTextField txtShower;
 
 	/**对ai进程的控制*/
 	private Timer aiTimer = new Timer();
+
+	/**棋盘的大小*/
+	private int row;
 
 	/**棋盘格子之间的宽度*/
 	private int gridSpace;
@@ -53,17 +53,26 @@ public class ChessPanel extends JPanel {
 	private int chessPanelheight;
 
 	/**记录程序运行情况*/
-	public int runTimeStatus = Constant.STOP;
+	private int runTimeStatus = Constant.STOP;
+
+	public int getRunTimeStatus() {
+		return runTimeStatus;
+	}
+
+	public void setRunTimeStatus(int runTimeStatus) {
+		this.runTimeStatus = runTimeStatus;
+	}
 
 	/**
 	 * 默认构造函数
 	 */
 	public ChessPanel() {
-		chessMethod = new ChessMethod();
+		row = 15;
 		gridSpace = 40;
-		chessradius = 20;
-		chessPanelWidth = 640;
-		chessPanelheight = 640;
+		chessradius = gridSpace / 2;
+		chessPanelWidth = (row + 1) * gridSpace;
+		chessPanelheight = (row + 1) * gridSpace;
+		chessMethod = new ChessMethod(row);
 		txtShower = new JTextField();
 		txtShower.setHorizontalAlignment(JTextField.CENTER);
 		txtShower.setEditable(false);
@@ -75,6 +84,10 @@ public class ChessPanel extends JPanel {
 		this.setLayout(new FlowLayout());
 		this.add(txtShower);
 		this.addMouseListener(chess);
+	}
+
+	public ChessMethod getchessMethod() {
+		return chessMethod;
 	}
 
 	/**
@@ -90,20 +103,20 @@ public class ChessPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if (chessMethod.winer == 0 && runTimeStatus == Constant.RUN) {
-				if (chessMethod.gameMode == Constant.PTOP) {
-					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius,table);
+			if (chessMethod.getWiner() == 0 && runTimeStatus == Constant.RUN) {
+				if (chessMethod.getGameMode() == Constant.PTOP) {
+					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
 					repaint();
 				}
 				else {
-					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius,table);
+					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
 					repaint();
-					if (b && chessMethod.winer == 0) {
+					if (b && chessMethod.getWiner() == 0) {
 						aiTimer.schedule(new TimerTask() {
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								chessMethod.pcPlay(table);
+								chessMethod.pcPlay();
 								repaint();
 							}
 						}, 500);
@@ -132,18 +145,6 @@ public class ChessPanel extends JPanel {
 	};
 
 	/**
-	 * 记录棋盘的信息
-	 */
-	public int[][] table = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
-
-	/**
 	 * 棋盘重绘时调用该函数，每次有人落子后重绘
 	 */
 	public void paint(Graphics g) {
@@ -160,28 +161,28 @@ public class ChessPanel extends JPanel {
 	 */
 	public void showwiner() {
 		if (runTimeStatus == Constant.RUN) {
-			if (chessMethod.gameMode == Constant.PTOPC) {
-				if (chessMethod.winer == Constant.BLACKCHESS) {
+			if (chessMethod.getGameMode() == Constant.PTOPC) {
+				if (chessMethod.getWiner() == Constant.BLACKCHESS) {
 					txtShower.setText("遗憾！您输了");
 				}
-				else if (chessMethod.winer == Constant.WHITECHESS) {
+				else if (chessMethod.getWiner() == Constant.WHITECHESS) {
 					txtShower.setText("恭喜！您获胜了");
 				}
-				else if (chessMethod.owner == Constant.BLACKCHESS)
+				else if (chessMethod.getOwner() == Constant.BLACKCHESS)
 					txtShower.setText("电脑正在思考，请耐心等待！");
-				else if (chessMethod.owner == Constant.WHITECHESS)
+				else if (chessMethod.getOwner() == Constant.WHITECHESS)
 					txtShower.setText("该您下棋");
 			}
-			else if (chessMethod.gameMode == Constant.PTOP) {
-				if (chessMethod.winer == Constant.BLACKCHESS) {
+			else if (chessMethod.getGameMode() == Constant.PTOP) {
+				if (chessMethod.getWiner() == Constant.BLACKCHESS) {
 					txtShower.setText("恭喜黑棋棋手，您获胜了");
 				}
-				else if (chessMethod.winer == Constant.WHITECHESS) {
+				else if (chessMethod.getWiner() == Constant.WHITECHESS) {
 					txtShower.setText("恭喜白棋棋手，您获胜了");
 				}
-				else if (chessMethod.owner == Constant.BLACKCHESS)
+				else if (chessMethod.getOwner() == Constant.BLACKCHESS)
 					txtShower.setText("请黑棋棋手下棋");
-				else if (chessMethod.owner == Constant.WHITECHESS)
+				else if (chessMethod.getOwner() == Constant.WHITECHESS)
 					txtShower.setText("请白棋棋手下棋");
 			}
 		}
@@ -207,6 +208,7 @@ public class ChessPanel extends JPanel {
 	 * @param g
 	 */
 	private void paintChess(Graphics g) {
+		int[][] table = chessMethod.getable();
 		for (int i = gridSpace; i != chessPanelWidth; i = i + gridSpace)
 			for (int j = gridSpace; j != chessPanelheight; j = j + gridSpace) {
 				if (table[i / gridSpace - 1][j / gridSpace - 1] == Constant.BLACKCHESS) {
