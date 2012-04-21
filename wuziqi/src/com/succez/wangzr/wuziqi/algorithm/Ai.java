@@ -22,12 +22,12 @@ public class Ai {
 	 * 棋盘的大小
 	 */
 	private int row;
-	
+
 	private int[][] table;
 
-	public Ai(int row,int[][] table) {
+	public Ai(int row, int[][] table) {
 		this.row = row;
-		this.table=table;
+		this.table = table;
 	}
 
 	/**
@@ -403,8 +403,8 @@ public class Ai {
 		int maxscore = -1;
 		int tempscore = 0;
 		int maxPositionX = 0, maxPositionY = 0;
-		for (int i = 0; i != 14; i++) {
-			for (int j = 0; j != 14; j++) {
+		for (int i = 0; i != row; i++) {
+			for (int j = 0; j != row; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
 					tempscore = positionRate(i, j);
@@ -430,14 +430,15 @@ public class Ai {
 	}
 
 	/**
-	 * 高级Ai查找最优下棋点
-	 * @return 查找到的最优下棋点
+	 * 高级电脑查找最优下棋点，采用博弈树
+	 * @param depth 博弈树的深度
+	 * @return  返回最优下棋点
 	 */
 	public Point advancedFind(int depth) {
 		Point point = new Point(-1, -1);
 		int max = -2000;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++) {
+		for (int i = 0; i != row; i++)
+			for (int j = 0; j != row; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
 					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
@@ -468,8 +469,8 @@ public class Ai {
 	private int maxSearch(int depth, int α) {
 		int max = -2000;
 		int backValue;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++)
+		for (int i = 0; i != row; i++)
+			for (int j = 0; j != row; j++)
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.BLACKCHESS;
 					if (depth == 1) {
@@ -500,8 +501,8 @@ public class Ai {
 	private int minSearch(int depth, int β) {
 		int min = 2000;
 		int backValue;
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++) {
+		for (int i = 0; i != row; i++)
+			for (int j = 0; j != row; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
 					if (depth == 1) {
@@ -533,8 +534,8 @@ public class Ai {
 	 */
 	private int panelRate(int color) {
 		int rate = -1000;
-		for (int i = 0; i < 15; i++) {
-			for (int j = 0; j < 15; j++) {
+		for (int i = 0; i < row; i++) {
+			for (int j = 0; j < row; j++) {
 				if (table[i][j] == color) {
 					int temp = positionRate(i, j);
 					if (temp > rate) {
@@ -554,8 +555,8 @@ public class Ai {
 	 * @return 所估的分数
 	 */
 	private int maxRate() {
-		int maxrate = panelRate(Constant.BLACKCHESS);
-		int minrate = panelRate(Constant.WHITECHESS) + 5;
+		int maxrate = panelRate(Constant.BLACKCHESS)+5;
+		int minrate = panelRate(Constant.WHITECHESS);
 		int situation = maxrate + minrate;
 		if (maxrate >= ChessStyle.LIVE_4 && minrate > -ChessStyle.LIVE_4)
 			situation = Constant.WIN;

@@ -22,9 +22,6 @@ public class ChessMethod {
 	/**棋盘大小*/
 	private int row;
 
-	/**记录Ai查到的点*/
-	private Point aiPostionP;
-
 	/**标记胜利者*/
 	private int winer = 0;
 
@@ -46,12 +43,13 @@ public class ChessMethod {
 		this.row = row;
 		table = new int[row][row];
 	}
+
 	/**
 	 * 获取棋盘信息
 	 * @return
 	 */
-	public int[][] getable() {
-		return table;
+	public int getable(int positionX, int positionY) {
+		return table[positionX][positionY];
 	}
 
 	/**
@@ -60,37 +58,46 @@ public class ChessMethod {
 	 * @param positionY 待设置的点的纵坐标
 	 * @param color     待设置的棋子信息
 	 */
-	public void setable(int positionX,int positionY,int color) {
-		table[positionX][positionY]=color;
+	public void setable(int positionX, int positionY, int color) {
+		table[positionX][positionY] = color;
 	}
 
 	public int getRow() {
 		return row;
 	}
+
 	public int getAiLevel() {
 		return aiLevel;
 	}
+
 	public int getOwner() {
 		return owner;
 	}
+
 	public int getWiner() {
 		return winer;
 	}
+
 	public int getGameMode() {
 		return gameMode;
 	}
+
 	public void setAiLevel(int aiLevel) {
 		this.aiLevel = aiLevel;
 	}
+
 	public void setOwner(int owner) {
 		this.owner = owner;
 	}
+
 	public void setWiner(int winer) {
 		this.winer = winer;
 	}
+
 	public void setGameMode(int gameMode) {
 		this.gameMode = gameMode;
 	}
+
 	/**
 	 * 双人对战控制函数
 	 * @param panelLocationX  棋手在物理棋盘上点下点的横坐标
@@ -102,10 +109,10 @@ public class ChessMethod {
 		Point p = new Point(panelLocationX, panelLocationY);
 		p = positionTransform(p, space, radius);
 		if (p.positionX != -1) {
-			if (table[p.positionX][p.positionY] == 0) {
-				table[p.positionX][p.positionY] = owner;
-				owner = -owner;
-				if (owner == Constant.BLACKCHESS) {
+			if (getable(p.positionX, p.positionY) == 0) {
+				setable(p.positionX, p.positionY, getOwner());
+				setOwner(-getOwner());
+				if (getOwner() == Constant.BLACKCHESS) {
 					methodLogger.info("白棋棋手在({},{})落子", p.positionX, p.positionY);
 				}
 				else {
@@ -115,8 +122,9 @@ public class ChessMethod {
 			else {
 				methodLogger.warn("您没有把棋子下到有效的区域内");
 			}
-			if (isWin(p.positionX, p.positionY))
-				winer = -owner;
+			if (isWin(p.positionX, p.positionY)) {
+				setWiner(-getOwner());
+			}
 		}
 		else {
 			methodLogger.warn("您没有把棋子下到有效的区域内");
@@ -133,15 +141,16 @@ public class ChessMethod {
 	 * @return  返回值表明人是否把棋子下到了有效的位置,true表示棋子下到了有效的位置，false表示没有
 	 */
 	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius) {
-		Point positionP = new Point(panelLocationX, panelLocationY);
-		positionP = positionTransform(positionP, space, radius);
-		if (positionP.positionX != -1) {
-			if (table[positionP.positionX][positionP.positionY] == 0) {
-				table[positionP.positionX][positionP.positionY] = Constant.WHITECHESS;
-				if (isWin(positionP.positionX, positionP.positionY))
-					winer = Constant.WHITECHESS;
-				methodLogger.info("棋手在({},{})落子", positionP.positionX, positionP.positionY);
-				owner = -owner;
+		Point p = new Point(panelLocationX, panelLocationY);
+		p = positionTransform(p, space, radius);
+		if (p.positionX != -1) {
+			if (getable(p.positionX, p.positionY) == 0) {
+				setable(p.positionX, p.positionY, Constant.WHITECHESS);
+				if (isWin(p.positionX, p.positionY)) {
+					setWiner(Constant.WHITECHESS);
+				}
+				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
+				setOwner(-getOwner());
 				return true;
 			}
 			else {
@@ -156,20 +165,22 @@ public class ChessMethod {
 	 * 人机对战是电脑的控制函数
 	 */
 	public void pcPlay() {
-		Ai ai = new Ai(row,table);
-		if (aiLevel == Constant.PRIMARY) {
+		Ai ai = new Ai(row, table);
+		/**记录Ai查到的点*/
+		Point aiPostionP;
+		if (getAiLevel() == Constant.PRIMARY) {
 			aiPostionP = ai.primaryFind();
 		}
 		else {
 			aiPostionP = ai.advancedFind(3);
 		}
-		table[aiPostionP.positionX][aiPostionP.positionY] = Constant.BLACKCHESS;
+		setable(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
-			winer = Constant.BLACKCHESS;
+			setWiner(Constant.BLACKCHESS);
 		}
-		owner = -owner;
+		setOwner(-getOwner());
 		methodLogger.info("ai在({},{})落子", aiPostionP.positionX, aiPostionP.positionY);
-		if (winer == Constant.BLACKCHESS) {
+		if (getWiner() == Constant.BLACKCHESS) {
 			methodLogger.info("ai胜利了");
 		}
 	}
@@ -180,8 +191,9 @@ public class ChessMethod {
 	public void resetChessPanel() {
 		for (int i = 0; i != 15; i++)
 			for (int j = 0; j != 15; j++)
-				if (table[i][j] != 0)
-					table[i][j] = 0;
+				if (getable(i, j) != 0) {
+					setable(i, j, 0);
+				}
 	}
 
 	/**
@@ -271,7 +283,7 @@ public class ChessMethod {
 			return false;
 		else if (nextPositionY < 0 || nextPositionY > row - 1)
 			return false;
-		else if (table[currentPositionX][currentPositionY] == table[nextPositionX][nextPositionY])
+		else if (getable(currentPositionX, currentPositionY) ==getable(nextPositionX, nextPositionY))
 			return true;
 		return false;
 	}

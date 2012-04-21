@@ -208,14 +208,13 @@ public class ChessPanel extends JPanel {
 	 * @param g
 	 */
 	private void paintChess(Graphics g) {
-		int[][] table = chessMethod.getable();
 		for (int i = gridSpace; i != chessPanelWidth; i = i + gridSpace)
 			for (int j = gridSpace; j != chessPanelheight; j = j + gridSpace) {
-				if (table[i / gridSpace - 1][j / gridSpace - 1] == Constant.BLACKCHESS) {
+				if (chessMethod.getable(i / gridSpace - 1, j / gridSpace - 1) == Constant.BLACKCHESS) {
 					g.setColor(Color.black);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}
-				else if (table[i / gridSpace - 1][j / gridSpace - 1] == Constant.WHITECHESS) {
+				else if (chessMethod.getable(i / gridSpace - 1, j / gridSpace - 1)== Constant.WHITECHESS) {
 					g.setColor(Color.white);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}
