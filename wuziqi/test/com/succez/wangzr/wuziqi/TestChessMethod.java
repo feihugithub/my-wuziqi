@@ -17,5 +17,9 @@ import com.succez.wangzr.wuziqi.ui.ChessPanel;
  * @createdate 2012-4-9
  */
 public class TestChessMethod extends TestCase{
-	
+
+	public void testPcPlay(){
+		ChessMethod method=new ChessMethod(15);
+		method.setable(7, 7, Constant.BLACKCHESS);
+	}
 }

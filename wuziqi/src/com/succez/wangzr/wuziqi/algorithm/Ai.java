@@ -23,7 +23,7 @@ public class Ai {
 	 */
 	private int row;
 
-	private int[][] table;
+	private int[][] table=new int[row][row];
 
 	public Ai(int row, int[][] table) {
 		this.row = row;
@@ -440,8 +440,14 @@ public class Ai {
 		for (int i = 0; i != row; i++)
 			for (int j = 0; j != row; j++) {
 				if (table[i][j] == 0) {
-					table[i][j] = Constant.BLACKCHESS;
-					if (positionRate(i, j) == ChessStyle.SUCCESS_5) {
+					table[i][j] = Constant.WHITECHESS;
+					int mustbe=positionRate(i,j);
+					table[i][j]=Constant.BLACKCHESS;
+					int temp=positionRate(i, j)+1;
+					if(temp>mustbe){
+						mustbe=temp;
+					}
+					if (mustbe >= ChessStyle.LIVE_4) {
 						point.positionX = i;
 						point.positionY = j;
 						table[i][j] = 0;
@@ -555,13 +561,9 @@ public class Ai {
 	 * @return 所估的分数
 	 */
 	private int maxRate() {
-		int maxrate = panelRate(Constant.BLACKCHESS)+5;
+		int maxrate = panelRate(Constant.BLACKCHESS);
 		int minrate = panelRate(Constant.WHITECHESS);
 		int situation = maxrate + minrate;
-		if (maxrate >= ChessStyle.LIVE_4 && minrate > -ChessStyle.LIVE_4)
-			situation = Constant.WIN;
-		else if (minrate <= -ChessStyle.LIVE_4)
-			situation = Constant.LOSE;
 		return situation;
 	}
 }
