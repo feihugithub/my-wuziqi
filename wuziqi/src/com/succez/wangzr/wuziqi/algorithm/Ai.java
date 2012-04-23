@@ -447,7 +447,7 @@ public class Ai {
 					if(temp>mustbe){
 						mustbe=temp;
 					}
-					if (mustbe >= ChessStyle.LIVE_4) {
+					if (mustbe >= ChessStyle.DOUBLE_LIVE_3) {
 						point.positionX = i;
 						point.positionY = j;
 						table[i][j] = 0;
