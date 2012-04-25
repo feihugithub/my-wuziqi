@@ -16,7 +16,7 @@ import com.succez.wangzr.wuziqi.tools.Point;
  * @createdate 2012-4-1
  */
 public class Ai {
-	private final static Logger AILO_LOGGER = LoggerFactory.getLogger(Ai.class);
+	private final static Logger aiLogger = LoggerFactory.getLogger(Ai.class);
 
 	/**
 	 * 棋盘的大小
@@ -425,7 +425,7 @@ public class Ai {
 			}
 		}
 		Point point = new Point(maxPositionX, maxPositionY);
-		AILO_LOGGER.info("ai找到的点的估值是:{}", maxscore);
+		aiLogger.info("ai找到的点的估值是:{}", maxscore);
 		return point;
 	}
 
@@ -451,6 +451,7 @@ public class Ai {
 						point.positionX = i;
 						point.positionY = j;
 						table[i][j] = 0;
+						aiLogger.info("这是必须防守或者必定胜利的点");
 						return point;
 					}
 					else {
@@ -464,7 +465,7 @@ public class Ai {
 					}
 				}
 			}
-		AILO_LOGGER.info("ai找到的点的回溯值是:{}", max);
+		aiLogger.info("ai找到的点的回溯值是:{}", max);
 		return point;
 	}
 

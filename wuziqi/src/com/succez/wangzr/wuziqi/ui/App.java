@@ -111,8 +111,6 @@ public class App extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			/**重置胜利者信息*/
-			chessPanel.getchessMethod().setWiner(0);
 			/**重置双人对战时下棋所有权*/
 			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOP) {
 				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);

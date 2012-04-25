@@ -194,6 +194,7 @@ public class ChessMethod {
 				if (getable(i, j) != 0) {
 					setable(i, j, 0);
 				}
+		setWiner(0);
 	}
 
 	/**
