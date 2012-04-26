@@ -108,7 +108,7 @@ public class ChessPanel extends JPanel {
 					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
 					repaint();
 				}
-				else {
+				else if (chessMethod.getExclude() == Constant.PEOPLEOWN) {
 					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
 					repaint();
 					if (b && chessMethod.getWiner() == 0) {
@@ -119,7 +119,7 @@ public class ChessPanel extends JPanel {
 								chessMethod.pcPlay();
 								repaint();
 							}
-						}, 500);
+						}, 5000);
 					}
 				}
 			}
@@ -214,7 +214,7 @@ public class ChessPanel extends JPanel {
 					g.setColor(Color.black);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}
-				else if (chessMethod.getable(i / gridSpace - 1, j / gridSpace - 1)== Constant.WHITECHESS) {
+				else if (chessMethod.getable(i / gridSpace - 1, j / gridSpace - 1) == Constant.WHITECHESS) {
 					g.setColor(Color.white);
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}

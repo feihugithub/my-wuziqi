@@ -57,7 +57,7 @@ public class App extends JFrame {
 				chessPanel.getchessMethod().setable(7, 7, Constant.BLACKCHESS);
 				chessPanel.getchessMethod().setOwner(-chessPanel.getchessMethod().getOwner());
 			}
-			chessPanel.paint(chessPanel.getGraphics());
+			chessPanel.repaint();
 		}
 	};
 
@@ -112,24 +112,26 @@ public class App extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			/**重置双人对战时下棋所有权*/
-			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOP) {
-				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
-			}
-			else {
-				if (firsthand == Constant.PCFIRST) {
+			if (chessPanel.getchessMethod().getExclude() == Constant.PEOPLEOWN) {
+				if (chessPanel.getchessMethod().getGameMode() == Constant.PTOP) {
 					chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 				}
 				else {
-					chessPanel.getchessMethod().setOwner(Constant.WHITECHESS);
+					if (firsthand == Constant.PCFIRST) {
+						chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
+					}
+					else {
+						chessPanel.getchessMethod().setOwner(Constant.WHITECHESS);
+					}
 				}
+				/** 重置现在运行情况*/
+				chessPanel.setRunTimeStatus(Constant.STOP);
+				btnStart.setVisible(true);
+				/**重置棋盘信息*/
+				chessPanel.getchessMethod().resetChessPanel();
+				chessPanel.repaint();
+				btnReset.setVisible(false);
 			}
-			/** 重置现在运行情况*/
-			chessPanel.setRunTimeStatus(Constant.STOP);
-			btnStart.setVisible(true);
-			/**重置棋盘信息*/
-			chessPanel.getchessMethod().resetChessPanel();
-			chessPanel.repaint();
-			btnReset.setVisible(false);
 		}
 	};
 

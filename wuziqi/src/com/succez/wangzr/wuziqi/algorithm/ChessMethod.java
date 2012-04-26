@@ -39,6 +39,9 @@ public class ChessMethod {
 	 */
 	private int[][] table;
 
+	/**控制下棋过程的控制权*/
+	private int exclude = Constant.PEOPLEOWN;
+
 	public ChessMethod(int row) {
 		this.row = row;
 		table = new int[row][row];
@@ -98,6 +101,14 @@ public class ChessMethod {
 		this.gameMode = gameMode;
 	}
 
+	public int getExclude() {
+		return exclude;
+	}
+
+	public void setExclude(int exclude) {
+		this.exclude = exclude;
+	}
+
 	/**
 	 * 双人对战控制函数
 	 * @param panelLocationX  棋手在物理棋盘上点下点的横坐标
@@ -146,8 +157,10 @@ public class ChessMethod {
 		if (p.positionX != -1) {
 			if (getable(p.positionX, p.positionY) == 0) {
 				setable(p.positionX, p.positionY, Constant.WHITECHESS);
+				setExclude(Constant.PCOWN);
 				if (isWin(p.positionX, p.positionY)) {
 					setWiner(Constant.WHITECHESS);
+					setExclude(Constant.PEOPLEOWN);
 				}
 				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
 				setOwner(-getOwner());
@@ -179,6 +192,7 @@ public class ChessMethod {
 			setWiner(Constant.BLACKCHESS);
 		}
 		setOwner(-getOwner());
+		setExclude(Constant.PEOPLEOWN);
 		methodLogger.info("ai在({},{})落子", aiPostionP.positionX, aiPostionP.positionY);
 		if (getWiner() == Constant.BLACKCHESS) {
 			methodLogger.info("ai胜利了");
@@ -284,7 +298,7 @@ public class ChessMethod {
 			return false;
 		else if (nextPositionY < 0 || nextPositionY > row - 1)
 			return false;
-		else if (getable(currentPositionX, currentPositionY) ==getable(nextPositionX, nextPositionY))
+		else if (getable(currentPositionX, currentPositionY) == getable(nextPositionX, nextPositionY))
 			return true;
 		return false;
 	}

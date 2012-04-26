@@ -60,4 +60,10 @@ public interface Constant {
 	/**博弈树终局状态必败*/
 	public static final int LOSE = -1000;
 
+	/**下棋过程占有权是人，此时电脑不能下棋*/
+	public static final int PEOPLEOWN = 1;
+
+	/**下棋的过程占有权是电脑，此时人不能下棋*/
+	public static final int PCOWN = -1;
+
 }
