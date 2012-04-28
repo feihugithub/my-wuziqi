@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -102,26 +103,39 @@ public class ChessPanel extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			if (chessMethod.getWiner() == 0 && runTimeStatus == Constant.RUN) {
-				if (chessMethod.getGameMode() == Constant.PTOP) {
-					chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
-					repaint();
-				}
-				else if (chessMethod.getExclude() == Constant.PEOPLEOWN) {
-					boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
-					repaint();
-					if (b && chessMethod.getWiner() == 0) {
-						aiTimer.schedule(new TimerTask() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								chessMethod.pcPlay();
-								repaint();
-							}
-						}, 5000);
+			try {
+				// TODO Auto-generated method stub
+				if (chessMethod.getWiner() == 0 && runTimeStatus == Constant.RUN) {
+					if (chessMethod.getGameMode() == Constant.PTOP) {
+						chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
+						repaint();
+					}
+					else if (chessMethod.getExclude() == Constant.PEOPLEOWN) {
+						boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
+						repaint();
+						if (b && chessMethod.getWiner() == 0) {
+							aiTimer.schedule(new TimerTask() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+
+									try {
+										chessMethod.pcPlay();
+									}
+									catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+									repaint();
+								}
+							}, 500);
+						}
 					}
 				}
+			}
+			catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 		}
 
@@ -166,7 +180,7 @@ public class ChessPanel extends JPanel {
 					txtShower.setText("遗憾！您输了");
 				}
 				else if (chessMethod.getWiner() == Constant.WHITECHESS) {
-					txtShower.setText("恭喜！您获胜了");
+					txtShower.setText("祝贺！您获胜了");
 				}
 				else if (chessMethod.getOwner() == Constant.BLACKCHESS)
 					txtShower.setText("电脑正在思考，请耐心等待！");
@@ -175,10 +189,10 @@ public class ChessPanel extends JPanel {
 			}
 			else if (chessMethod.getGameMode() == Constant.PTOP) {
 				if (chessMethod.getWiner() == Constant.BLACKCHESS) {
-					txtShower.setText("恭喜黑棋棋手，您获胜了");
+					txtShower.setText("祝贺黑棋棋手，您获胜了");
 				}
 				else if (chessMethod.getWiner() == Constant.WHITECHESS) {
-					txtShower.setText("恭喜白棋棋手，您获胜了");
+					txtShower.setText("祝贺白棋棋手，您获胜了");
 				}
 				else if (chessMethod.getOwner() == Constant.BLACKCHESS)
 					txtShower.setText("请黑棋棋手下棋");

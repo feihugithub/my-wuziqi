@@ -31,10 +31,10 @@ public interface Constant {
 	public static final int SAME = 1;
 
 	/**表示人先手*/
-	public static final int PEOPLEFIRST = 1;
+	public static final int PEOPLEFIRST = -1;
 
 	/**表示Ai先手*/
-	public static final int PCFIRST = -1;
+	public static final int PCFIRST = 1;
 
 	/**表示对弈正在进行*/
 	public static final int RUN = 1;

@@ -2,6 +2,8 @@ package com.succez.wangzr.wuziqi;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +33,7 @@ public class TestChessMethod {
 	}
 
 	@Test
-	public void testPrimaryFind() {
+	public void testPrimaryFind() throws IOException {
 		Point[] testable = { new Point(6, 8), new Point(8, 8), new Point(7, 9), new Point(9, 7), new Point(8, 6),
 				new Point(10, 8), new Point(8, 4), new Point(3, 9), new Point(7, 4), new Point(8, 7), new Point(8, 9),
 				new Point(9, 9), new Point(9, 8), new Point(10, 7), new Point(9, 10), new Point(11, 6),
@@ -52,7 +54,7 @@ public class TestChessMethod {
 	}
 
 	@Test
-	public void testAdvancedFind() {
+	public void testAdvancedFind() throws IOException {
 		Point[] testable = { new Point(6, 8), new Point(6, 7), new Point(7, 6), new Point(7, 5), new Point(8, 8),
 				new Point(3, 9), new Point(5, 6), new Point(4, 6), new Point(4, 4), new Point(6, 5), new Point(3, 4),
 				new Point(6, 3), new Point(1, 5), new Point(6, 9) };

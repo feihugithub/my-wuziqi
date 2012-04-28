@@ -40,9 +40,6 @@ public class App extends JFrame {
 	/**开始按钮*/
 	private JButton btnStart;
 
-	/**先手控制*/
-	private int firsthand = Constant.PCFIRST;
-
 	/**
 	 * 开始按钮监听事件
 	 */
@@ -53,9 +50,9 @@ public class App extends JFrame {
 			chessPanel.setRunTimeStatus(Constant.RUN);
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
-			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC && firsthand == Constant.PCFIRST) {
+			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC && chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
 				chessPanel.getchessMethod().setable(7, 7, Constant.BLACKCHESS);
-				chessPanel.getchessMethod().setOwner(-chessPanel.getchessMethod().getOwner());
+				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 			}
 			chessPanel.repaint();
 		}
@@ -117,7 +114,7 @@ public class App extends JFrame {
 					chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 				}
 				else {
-					if (firsthand == Constant.PCFIRST) {
+					if (chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
 						chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 					}
 					else {
@@ -129,6 +126,7 @@ public class App extends JFrame {
 				btnStart.setVisible(true);
 				/**重置棋盘信息*/
 				chessPanel.getchessMethod().resetChessPanel();
+				chessPanel.getchessMethod().cleanRecordInfo();
 				chessPanel.repaint();
 				btnReset.setVisible(false);
 			}
@@ -143,8 +141,8 @@ public class App extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (chessPanel.getRunTimeStatus() == Constant.STOP) {
-				firsthand = -firsthand;
-				if (firsthand == Constant.PCFIRST) {
+				chessPanel.getchessMethod().setFirsthand(-chessPanel.getchessMethod().getFirsthand());
+				if (chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
 					btnUphand.setText("电脑先下");
 					chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 				}

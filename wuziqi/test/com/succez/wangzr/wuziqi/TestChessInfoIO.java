@@ -9,7 +9,7 @@ import com.succez.wangzr.wuziqi.algorithm.ChessInfoIO;
 import com.succez.wangzr.wuziqi.tools.InfoUnit;
 
 public class TestChessInfoIO {
-	private static InfoUnit[] info = new InfoUnit[225];
+	private  InfoUnit[] info = new InfoUnit[225];
 	@Test
 	public void testChessInfoRead() throws IOException {
 		int i = 0;

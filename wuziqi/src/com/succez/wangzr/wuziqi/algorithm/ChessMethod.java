@@ -1,9 +1,12 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
+import java.io.IOException;
+
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import com.succez.wangzr.wuziqi.tools.Constant;
+import com.succez.wangzr.wuziqi.tools.InfoUnit;
 import com.succez.wangzr.wuziqi.tools.Point;
 
 /**
@@ -47,10 +50,29 @@ public class ChessMethod {
 		table = new int[row][row];
 	}
 
+	/**用来记录下棋的过程*/
+	private InfoUnit[] recordInfo = new InfoUnit[225];
+
+	/**记录信息的长度*/
+	private int infoLength = 1;
+
+	/**先手控制*/
+	private int firsthand = Constant.PCFIRST;
+
 	/**
-	 * 获取棋盘信息
-	 * @return
+	 * 清空下棋过程的记录
 	 */
+	public void cleanRecordInfo() {
+		for (int i = 0; i < infoLength; i++) {
+			recordInfo[i] = null;
+		}
+		infoLength = 1;
+	}
+
+	/**
+	* 获取棋盘信息
+	* @return
+	*/
 	public int getable(int positionX, int positionY) {
 		return table[positionX][positionY];
 	}
@@ -109,32 +131,46 @@ public class ChessMethod {
 		this.exclude = exclude;
 	}
 
+	public void setFirsthand(int firsthand) {
+		this.firsthand = firsthand;
+	}
+
+	public int getFirsthand() {
+		return firsthand;
+	}
+
 	/**
 	 * 双人对战控制函数
 	 * @param panelLocationX  棋手在物理棋盘上点下点的横坐标
 	 * @param panelLocationY  棋手在物理棋盘上点下点的纵坐标
 	 * @param space           棋盘的格子间距
 	 * @param radius          棋子的半径
+	 * @throws IOException 
 	 */
-	public void playPToP(int panelLocationX, int panelLocationY, int space, int radius) {
+	public void playPToP(int panelLocationX, int panelLocationY, int space, int radius) throws IOException {
 		Point p = new Point(panelLocationX, panelLocationY);
 		p = positionTransform(p, space, radius);
 		if (p.positionX != -1) {
 			if (getable(p.positionX, p.positionY) == 0) {
 				setable(p.positionX, p.positionY, getOwner());
-				setOwner(-getOwner());
+				recordInfo[infoLength++] = new InfoUnit(p.positionX, p.positionY, getOwner());
 				if (getOwner() == Constant.BLACKCHESS) {
-					methodLogger.info("白棋棋手在({},{})落子", p.positionX, p.positionY);
+					methodLogger.info("黑棋棋手在({},{})落子", p.positionX, p.positionY);
 				}
 				else {
-					methodLogger.info("黑棋棋手在({},{})落子", p.positionX, p.positionY);
+					methodLogger.info("白棋棋手在({},{})落子", p.positionX, p.positionY);
+				}
+				if (isWin(p.positionX, p.positionY)) {
+					setWiner(getOwner());
+					recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), 0);
+					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
+				}
+				else {
+					setOwner(-getOwner());
 				}
 			}
 			else {
 				methodLogger.warn("您没有把棋子下到有效的区域内");
-			}
-			if (isWin(p.positionX, p.positionY)) {
-				setWiner(-getOwner());
 			}
 		}
 		else {
@@ -150,34 +186,45 @@ public class ChessMethod {
 	 * @param space           棋盘格子间距
 	 * @param radius          棋子半径
 	 * @return  返回值表明人是否把棋子下到了有效的位置,true表示棋子下到了有效的位置，false表示没有
+	 * @throws IOException 
 	 */
-	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius) {
+	public boolean pPlay(int panelLocationX, int panelLocationY, int space, int radius) throws IOException {
+		if (getFirsthand() == Constant.PCFIRST && infoLength == 1) {
+			recordInfo[infoLength++] = new InfoUnit(7, 7, Constant.BLACKCHESS);
+		}
 		Point p = new Point(panelLocationX, panelLocationY);
 		p = positionTransform(p, space, radius);
 		if (p.positionX != -1) {
 			if (getable(p.positionX, p.positionY) == 0) {
 				setable(p.positionX, p.positionY, Constant.WHITECHESS);
+				recordInfo[infoLength++] = new InfoUnit(p.positionX, p.positionY, Constant.WHITECHESS);
 				setExclude(Constant.PCOWN);
 				if (isWin(p.positionX, p.positionY)) {
 					setWiner(Constant.WHITECHESS);
 					setExclude(Constant.PEOPLEOWN);
+					recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), firsthand);
+					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 				}
 				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
-				setOwner(-getOwner());
+				setOwner(Constant.BLACKCHESS);
 				return true;
 			}
 			else {
 				methodLogger.warn("您没有把棋子下到有效的区域内");
+				return false;
 			}
 		}
-		methodLogger.warn("您没有把棋子下到有效的区域内");
-		return false;
+		else {
+			methodLogger.warn("您没有把棋子下到有效的区域内");
+			return false;
+		}
 	}
 
 	/**
 	 * 人机对战是电脑的控制函数
+	 * @throws IOException 
 	 */
-	public void pcPlay() {
+	public void pcPlay() throws IOException {
 		Ai ai = new Ai(row, table);
 		/**记录Ai查到的点*/
 		Point aiPostionP;
@@ -188,10 +235,13 @@ public class ChessMethod {
 			aiPostionP = ai.advancedFind(3);
 		}
 		setable(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
+		recordInfo[infoLength++]=new InfoUnit(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			setWiner(Constant.BLACKCHESS);
+			recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), firsthand);
+			ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 		}
-		setOwner(-getOwner());
+		setOwner(Constant.WHITECHESS);
 		setExclude(Constant.PEOPLEOWN);
 		methodLogger.info("ai在({},{})落子", aiPostionP.positionX, aiPostionP.positionY);
 		if (getWiner() == Constant.BLACKCHESS) {
