@@ -55,7 +55,9 @@ public class App extends JFrame {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			btnRepaly.setVisible(false);
 		}
+		
 	};
 	/**
 	 * 开始按钮监听事件
@@ -65,7 +67,6 @@ public class App extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			chessPanel.getchessMethod().resetChessPanel();
-			btnRepaly.setVisible(false);
 			chessPanel.setRunTimeStatus(Constant.RUN);
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
@@ -75,7 +76,7 @@ public class App extends JFrame {
 				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 			}
 			chessPanel.repaint();
-			chessPanel.showMessage();
+			btnRepaly.setVisible(false);
 		}
 	};
 
@@ -149,7 +150,6 @@ public class App extends JFrame {
 				chessPanel.getchessMethod().resetChessPanel();
 				chessPanel.getchessMethod().cleanRecordInfo();
 				chessPanel.repaint();
-				chessPanel.showMessage();
 				btnReset.setVisible(false);
 				btnRepaly.setVisible(true);
 			}

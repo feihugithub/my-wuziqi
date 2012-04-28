@@ -201,7 +201,7 @@ public class ChessMethod {
 				if (isWin(p.positionX, p.positionY)) {
 					setWiner(Constant.WHITECHESS);
 					setExclude(Constant.PEOPLEOWN);
-					recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), firsthand);
+					recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), aiLevel);
 					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 				}
 				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
@@ -237,7 +237,7 @@ public class ChessMethod {
 		recordInfo[infoLength++]=new InfoUnit(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			setWiner(Constant.BLACKCHESS);
-			recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), firsthand);
+			recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), aiLevel);
 			ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 		}
 		setOwner(Constant.WHITECHESS);

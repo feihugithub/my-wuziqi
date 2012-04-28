@@ -77,7 +77,7 @@ public class ChessPanel extends JPanel {
 		txtShower.setHorizontalAlignment(JTextField.CENTER);
 		txtShower.setEditable(false);
 		txtShower.setBorder(BorderFactory.createEmptyBorder());
-		txtShower.setPreferredSize(new Dimension(300, 30));
+		txtShower.setPreferredSize(new Dimension(500, 30));
 		txtShower.setBackground(Color.gray);
 		txtShower.setFont(new Font("楷体", Font.PLAIN, 20));
 		this.setPreferredSize(new Dimension(chessPanelWidth, chessPanelheight));
@@ -108,12 +108,10 @@ public class ChessPanel extends JPanel {
 					if (chessMethod.getGameMode() == Constant.PTOP) {
 						chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
 						repaint();
-						showMessage();
 					}
 					else if (chessMethod.getExclude() == Constant.PEOPLEOWN) {
 						boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
 						repaint();
-						showMessage();
 						if (b && chessMethod.getWiner() == 0) {
 							aiTimer.schedule(new TimerTask() {
 								@Override
@@ -168,6 +166,7 @@ public class ChessPanel extends JPanel {
 		g.setColor(Color.black);
 		paintPanel(g);
 		paintChess(g);
+		showMessage();
 	}
 
 	/**
@@ -200,10 +199,6 @@ public class ChessPanel extends JPanel {
 					txtShower.setText("请白棋棋手下棋");
 			}
 		}
-		else {
-			txtShower.setText("");
-		}
-
 	}
 
 	/**
@@ -235,6 +230,35 @@ public class ChessPanel extends JPanel {
 			}
 	}
 
+	private void reShowMessage(int mode, int winer, int level) {
+		if (mode == Constant.PTOP) {
+			if (winer == Constant.BLACKCHESS) {
+				txtShower.setText("双人对战，胜利者是黑棋棋手");
+			}
+			else {
+				txtShower.setText("双人对战，胜利者是白棋棋手");
+			}
+		}
+		else {
+			if (level == Constant.PRIMARY) {
+				if (winer == Constant.BLACKCHESS) {
+					txtShower.setText("人机对战，初级电脑，胜利者是电脑");
+				}
+				else {
+					txtShower.setText("人机对战，初级电脑，胜利者是棋手");
+				}
+			}
+			else {
+				if (winer == Constant.BLACKCHESS) {
+					txtShower.setText("人机对战，高级电脑，胜利者是电脑");
+				}
+				else {
+					txtShower.setText("人机对战，高级电脑，胜利者是棋手");
+				}
+			}
+		}
+	}
+
 	/**
 	 * 重现棋局
 	 * @throws IOException 
@@ -244,21 +268,11 @@ public class ChessPanel extends JPanel {
 		int infoLength = ChessInfoIO.chessInfoRead("chessinfo.csv", infoReader);
 		int mode = infoReader[0].point.positionX;
 		int winer = infoReader[0].point.positionY;
-		int first = infoReader[0].control;
-		if (mode == Constant.PTOP) {
-			txtShower.setText("双人对战");
-		}
-		else {
-			if (first == Constant.BLACKCHESS) {
-				txtShower.setText("人机对战，电脑先下");
-			}
-			else {
-				txtShower.setText("人机对战，棋手先下");
-			}
-		}
+		int level = infoReader[0].control;
+		reShowMessage(mode, winer, level);
 		for (int i = 1; i < infoLength; i++) {
 			try {
-				Thread.currentThread().sleep(1000);
+				Thread.currentThread().sleep(500);
 			}
 			catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -266,22 +280,8 @@ public class ChessPanel extends JPanel {
 			}
 			chessMethod.setable(infoReader[i].point.positionX, infoReader[i].point.positionY, infoReader[i].control);
 			this.repaint();
+			update(this.getGraphics());
 		}
-		if (mode == Constant.PTOP) {
-			if (winer == Constant.BLACKCHESS) {
-				txtShower.setText("胜利者是黑棋棋手");
-			}
-			else {
-				txtShower.setText("胜利者是白棋棋手");
-			}
-		}
-		else {
-			if (winer == Constant.BLACKCHESS) {
-				txtShower.setText("胜利者是电脑");
-			}
-			else {
-				txtShower.setText("胜利者是棋手");
-			}
-		}
+		reShowMessage(mode, winer, level);
 	}
 }
