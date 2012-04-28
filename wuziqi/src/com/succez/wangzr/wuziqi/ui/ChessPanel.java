@@ -15,8 +15,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.succez.wangzr.wuziqi.algorithm.ChessInfoIO;
 import com.succez.wangzr.wuziqi.algorithm.ChessMethod;
 import com.succez.wangzr.wuziqi.tools.Constant;
+import com.succez.wangzr.wuziqi.tools.InfoUnit;
 
 /**
  * 绘制棋盘相关内容
@@ -64,9 +66,6 @@ public class ChessPanel extends JPanel {
 		this.runTimeStatus = runTimeStatus;
 	}
 
-	/**
-	 * 默认构造函数
-	 */
 	public ChessPanel() {
 		row = 15;
 		gridSpace = 40;
@@ -109,10 +108,12 @@ public class ChessPanel extends JPanel {
 					if (chessMethod.getGameMode() == Constant.PTOP) {
 						chessMethod.playPToP(e.getX(), e.getY(), gridSpace, chessradius);
 						repaint();
+						showMessage();
 					}
 					else if (chessMethod.getExclude() == Constant.PEOPLEOWN) {
 						boolean b = chessMethod.pPlay(e.getX(), e.getY(), gridSpace, chessradius);
 						repaint();
+						showMessage();
 						if (b && chessMethod.getWiner() == 0) {
 							aiTimer.schedule(new TimerTask() {
 								@Override
@@ -167,13 +168,12 @@ public class ChessPanel extends JPanel {
 		g.setColor(Color.black);
 		paintPanel(g);
 		paintChess(g);
-		showwiner();
 	}
 
 	/**
 	 * 显示提示信息
 	 */
-	public void showwiner() {
+	public void showMessage() {
 		if (runTimeStatus == Constant.RUN) {
 			if (chessMethod.getGameMode() == Constant.PTOPC) {
 				if (chessMethod.getWiner() == Constant.BLACKCHESS) {
@@ -233,5 +233,55 @@ public class ChessPanel extends JPanel {
 					g.fillOval(i - chessradius, j - chessradius, 2 * chessradius, 2 * chessradius);
 				}
 			}
+	}
+
+	/**
+	 * 重现棋局
+	 * @throws IOException 
+	 */
+	public void replay() throws IOException {
+		InfoUnit[] infoReader = new InfoUnit[225];
+		int infoLength = ChessInfoIO.chessInfoRead("chessinfo.csv", infoReader);
+		int mode = infoReader[0].point.positionX;
+		int winer = infoReader[0].point.positionY;
+		int first = infoReader[0].control;
+		if (mode == Constant.PTOP) {
+			txtShower.setText("双人对战");
+		}
+		else {
+			if (first == Constant.BLACKCHESS) {
+				txtShower.setText("人机对战，电脑先下");
+			}
+			else {
+				txtShower.setText("人机对战，棋手先下");
+			}
+		}
+		for (int i = 1; i < infoLength; i++) {
+			try {
+				Thread.currentThread().sleep(1000);
+			}
+			catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			chessMethod.setable(infoReader[i].point.positionX, infoReader[i].point.positionY, infoReader[i].control);
+			this.repaint();
+		}
+		if (mode == Constant.PTOP) {
+			if (winer == Constant.BLACKCHESS) {
+				txtShower.setText("胜利者是黑棋棋手");
+			}
+			else {
+				txtShower.setText("胜利者是白棋棋手");
+			}
+		}
+		else {
+			if (winer == Constant.BLACKCHESS) {
+				txtShower.setText("胜利者是电脑");
+			}
+			else {
+				txtShower.setText("胜利者是棋手");
+			}
+		}
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -40,6 +41,22 @@ public class App extends JFrame {
 	/**开始按钮*/
 	private JButton btnStart;
 
+	/**复盘按钮*/
+	private JButton btnRepaly;
+
+	private ActionListener re=new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			try {
+				chessPanel.replay();
+			}
+			catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	};
 	/**
 	 * 开始按钮监听事件
 	 */
@@ -47,14 +64,18 @@ public class App extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			chessPanel.getchessMethod().resetChessPanel();
+			btnRepaly.setVisible(false);
 			chessPanel.setRunTimeStatus(Constant.RUN);
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
-			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC && chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
+			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC
+					&& chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
 				chessPanel.getchessMethod().setable(7, 7, Constant.BLACKCHESS);
 				chessPanel.getchessMethod().setOwner(Constant.BLACKCHESS);
 			}
 			chessPanel.repaint();
+			chessPanel.showMessage();
 		}
 	};
 
@@ -128,7 +149,9 @@ public class App extends JFrame {
 				chessPanel.getchessMethod().resetChessPanel();
 				chessPanel.getchessMethod().cleanRecordInfo();
 				chessPanel.repaint();
+				chessPanel.showMessage();
 				btnReset.setVisible(false);
+				btnRepaly.setVisible(true);
 			}
 		}
 	};
@@ -155,9 +178,6 @@ public class App extends JFrame {
 		}
 	};
 
-	/**
-	 * 默认构造函数
-	 */
 	public App() {
 		super("五子棋");
 		chessPanel = new ChessPanel();
@@ -166,6 +186,7 @@ public class App extends JFrame {
 		btnMode = new JButton("双人对战");
 		btnUphand = new JButton("电脑先下");
 		btnLevel = new JButton("初级");
+		btnRepaly=new JButton("复盘");
 		btnReset.setVisible(false);
 		btnUphand.setVisible(false);
 		btnLevel.setVisible(false);
@@ -174,6 +195,7 @@ public class App extends JFrame {
 		btnUphand.addActionListener(first);
 		btnLevel.addActionListener(level);
 		btnStart.addActionListener(start);
+		btnRepaly.addActionListener(re);
 		this.add(chessPanel);
 		this.setLayout(new FlowLayout());
 		this.add(btnStart);
@@ -181,6 +203,7 @@ public class App extends JFrame {
 		this.add(btnMode);
 		this.add(btnLevel);
 		this.add(btnUphand);
+		this.add(btnRepaly);
 		this.getContentPane().setBackground(Color.gray);
 	}
 

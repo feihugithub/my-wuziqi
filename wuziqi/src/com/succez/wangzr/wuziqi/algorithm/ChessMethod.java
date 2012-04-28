@@ -1,7 +1,6 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
 import java.io.IOException;
-
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
