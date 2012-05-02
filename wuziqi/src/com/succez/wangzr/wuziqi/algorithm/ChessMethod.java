@@ -144,6 +144,19 @@ public class ChessMethod {
 	}
 
 	/**
+	 * 悔棋函数
+	 */
+	public void undo() {
+		if(infoLength>=2&&getWiner()==0){
+			setable(recordInfo[infoLength - 1].point.positionX, recordInfo[infoLength - 1].point.positionY,
+					0);
+			setOwner(recordInfo[infoLength-1].control);
+			recordInfo[--infoLength]=null;
+		}
+		
+	}
+
+	/**
 	 * 双人对战控制函数
 	 * @param panelLocationX  棋手在物理棋盘上点下点的横坐标
 	 * @param panelLocationY  棋手在物理棋盘上点下点的纵坐标

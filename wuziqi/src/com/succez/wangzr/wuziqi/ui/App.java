@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.SwingConsole;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * 绘制五子棋控制框架
@@ -44,8 +45,20 @@ public class App extends JFrame {
 	/**复盘按钮*/
 	private JButton btnRepaly;
 
-	private ActionListener re=new ActionListener() {
-		
+	/**悔棋按钮*/
+	private JButton btnUndo;
+
+	private ActionListener ud = new ActionListener() {
+
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			chessPanel.getchessMethod().undo();
+			chessPanel.repaint();
+		}
+	};
+
+	private ActionListener rp = new ActionListener() {
+
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			try {
@@ -57,8 +70,9 @@ public class App extends JFrame {
 			}
 			btnRepaly.setVisible(false);
 		}
-		
+
 	};
+
 	/**
 	 * 开始按钮监听事件
 	 */
@@ -70,6 +84,9 @@ public class App extends JFrame {
 			chessPanel.setRunTimeStatus(Constant.RUN);
 			btnStart.setVisible(false);
 			btnReset.setVisible(true);
+			if(chessPanel.getchessMethod().getGameMode()==Constant.PTOP){
+				btnUndo.setVisible(true);
+			}
 			if (chessPanel.getchessMethod().getGameMode() == Constant.PTOPC
 					&& chessPanel.getchessMethod().getFirsthand() == Constant.PCFIRST) {
 				chessPanel.getchessMethod().setable(7, 7, Constant.BLACKCHESS);
@@ -152,6 +169,7 @@ public class App extends JFrame {
 				chessPanel.repaint();
 				btnReset.setVisible(false);
 				btnRepaly.setVisible(true);
+				btnUndo.setVisible(false);
 			}
 		}
 	};
@@ -186,24 +204,28 @@ public class App extends JFrame {
 		btnMode = new JButton("双人对战");
 		btnUphand = new JButton("电脑先下");
 		btnLevel = new JButton("初级");
-		btnRepaly=new JButton("复盘");
+		btnRepaly = new JButton("复盘");
+		btnUndo = new JButton("悔棋");
 		btnReset.setVisible(false);
 		btnUphand.setVisible(false);
 		btnLevel.setVisible(false);
+		btnUndo.setVisible(false);
 		btnMode.addActionListener(mode);
 		btnReset.addActionListener(reset);
 		btnUphand.addActionListener(first);
 		btnLevel.addActionListener(level);
 		btnStart.addActionListener(start);
-		btnRepaly.addActionListener(re);
-		this.add(chessPanel);
+		btnRepaly.addActionListener(rp);
+		btnUndo.addActionListener(ud);
 		this.setLayout(new FlowLayout());
+		this.add(chessPanel);
 		this.add(btnStart);
 		this.add(btnReset);
 		this.add(btnMode);
 		this.add(btnLevel);
 		this.add(btnUphand);
 		this.add(btnRepaly);
+		this.add(btnUndo);
 		this.getContentPane().setBackground(Color.gray);
 	}
 
