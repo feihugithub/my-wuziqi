@@ -1,8 +1,9 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
 import java.io.IOException;
-import org.slf4j.LoggerFactory;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.InfoUnit;
@@ -84,6 +85,10 @@ public class ChessMethod {
 	 */
 	public void setable(int positionX, int positionY, int color) {
 		table[positionX][positionY] = color;
+	}
+
+	public void setTable(int[][] table) {
+		this.table = table;
 	}
 
 	public int getRow() {
@@ -201,7 +206,7 @@ public class ChessMethod {
 				if (isWin(p.positionX, p.positionY)) {
 					setWiner(Constant.WHITECHESS);
 					setExclude(Constant.PEOPLEOWN);
-					recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), aiLevel);
+					recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), aiLevel);
 					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 				}
 				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
@@ -234,10 +239,10 @@ public class ChessMethod {
 			aiPostionP = ai.advancedFind(3);
 		}
 		setable(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
-		recordInfo[infoLength++]=new InfoUnit(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
+		recordInfo[infoLength++] = new InfoUnit(aiPostionP.positionX, aiPostionP.positionY, Constant.BLACKCHESS);
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			setWiner(Constant.BLACKCHESS);
-			recordInfo[0]=new InfoUnit(getGameMode(), getWiner(), aiLevel);
+			recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), aiLevel);
 			ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
 		}
 		setOwner(Constant.WHITECHESS);
@@ -266,7 +271,7 @@ public class ChessMethod {
 	 * @param positionY 待判断的当前节点的纵坐标
 	 * @return 返回值是一boolean值，true表示该点使得给用户胜利，false表示没有胜利
 	 */
-	private boolean isWin(int positionX, int positionY) {
+	public boolean isWin(int positionX, int positionY) {
 		/**countH代表横向上的棋子个数*/
 		int countH = 0;
 		/**countS代表竖向上的棋子个数*/

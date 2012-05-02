@@ -272,7 +272,7 @@ public class ChessPanel extends JPanel {
 		reShowMessage(mode, winer, level);
 		for (int i = 1; i < infoLength; i++) {
 			try {
-				Thread.currentThread().sleep(500);
+				Thread.sleep(500);
 			}
 			catch (InterruptedException e) {
 				// TODO Auto-generated catch block

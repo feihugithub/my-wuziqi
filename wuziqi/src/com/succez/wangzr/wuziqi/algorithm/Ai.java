@@ -23,11 +23,23 @@ public class Ai {
 	 */
 	private int row;
 
-	private int[][] table=new int[row][row];
+	private int[][] table = new int[row][row];
 
 	public Ai(int row, int[][] table) {
 		this.row = row;
 		this.table = table;
+	}
+
+	public void setable(int x, int y, int color) {
+		this.table[x][y] = color;
+	}
+
+	public int getable(int x, int y) {
+		return this.table[x][y];
+	}
+
+	public int[][] getTable() {
+		return table;
 	}
 
 	/**
@@ -441,11 +453,11 @@ public class Ai {
 			for (int j = 0; j != row; j++) {
 				if (table[i][j] == 0) {
 					table[i][j] = Constant.WHITECHESS;
-					int mustbe=positionRate(i,j);
-					table[i][j]=Constant.BLACKCHESS;
-					int temp=positionRate(i, j)+1;
-					if(temp>mustbe){
-						mustbe=temp;
+					int mustbe = positionRate(i, j);
+					table[i][j] = Constant.BLACKCHESS;
+					int temp = positionRate(i, j) + 1;
+					if (temp > mustbe) {
+						mustbe = temp;
 					}
 					if (mustbe >= ChessStyle.DOUBLE_LIVE_3) {
 						point.positionX = i;
