@@ -23,7 +23,7 @@ public class TestAdvancedFind {
 		ChessMethod method = new ChessMethod(15);
 		Ai ai = new Ai(15, new int[15][15]);
 		InfoUnit[] info = new InfoUnit[225];
-		int length = ChessInfoIO.chessInfoRead("chessinfo.csv", info);
+		int length = ChessInfoIO.chessInfoRead("test/com/succez/wangzr/wuziqi/advanced.csv", info);
 		int index = 2;
 		int winer = 0;
 		if (info[0].control == Constant.ADVANCE) {

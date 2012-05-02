@@ -265,7 +265,7 @@ public class ChessPanel extends JPanel {
 	 */
 	public void replay() throws IOException {
 		InfoUnit[] infoReader = new InfoUnit[225];
-		int infoLength = ChessInfoIO.chessInfoRead("chessinfo.csv", infoReader);
+		int infoLength = ChessInfoIO.chessInfoRead("log/chessinfo.csv", infoReader);
 		int mode = infoReader[0].point.positionX;
 		int winer = infoReader[0].point.positionY;
 		int level = infoReader[0].control;

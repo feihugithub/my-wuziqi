@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.SwingConsole;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * 绘制五子棋控制框架
