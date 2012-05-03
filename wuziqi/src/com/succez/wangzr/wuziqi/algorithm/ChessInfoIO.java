@@ -2,6 +2,7 @@ package com.succez.wangzr.wuziqi.algorithm;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class ChessInfoIO {
 	 * @param file   要写入的文件名
 	 * @throws IOException 
 	 */
-	public static int chessInfoRead(String file, InfoUnit[] info) throws IOException {
+	public static int chessInfoRead(File file, InfoUnit[] info) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		int length = 0;
 		String line = null;
@@ -44,7 +45,7 @@ public class ChessInfoIO {
 	 * @param file   信息从其指定的文件名出读出
 	 * @throws IOException 
 	 */
-	public static void chessInfoWrite(String file, InfoUnit[] info,int length) throws IOException {
+	public static void chessInfoWrite(File file, InfoUnit[] info,int length) throws IOException {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 		int index=0;
 		int[] temp=new int[3];

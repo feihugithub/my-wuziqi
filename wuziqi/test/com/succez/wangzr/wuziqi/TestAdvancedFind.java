@@ -3,7 +3,6 @@ package com.succez.wangzr.wuziqi;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.succez.wangzr.wuziqi.algorithm.Ai;
-import com.succez.wangzr.wuziqi.algorithm.ChessInfoIO;
 import com.succez.wangzr.wuziqi.algorithm.ChessMethod;
 import com.succez.wangzr.wuziqi.tools.Constant;
 import com.succez.wangzr.wuziqi.tools.InfoUnit;

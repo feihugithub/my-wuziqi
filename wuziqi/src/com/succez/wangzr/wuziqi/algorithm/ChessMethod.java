@@ -1,5 +1,6 @@
 ﻿package com.succez.wangzr.wuziqi.algorithm;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -179,7 +180,7 @@ public class ChessMethod {
 				if (isWin(p.positionX, p.positionY)) {
 					setWiner(getOwner());
 					recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), 0);
-					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
+					ChessInfoIO.chessInfoWrite(new File("chessinfo.csv"), recordInfo, infoLength);
 				}
 				else {
 					setOwner(-getOwner());
@@ -219,7 +220,7 @@ public class ChessMethod {
 					setWiner(Constant.WHITECHESS);
 					setExclude(Constant.PEOPLEOWN);
 					recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), aiLevel);
-					ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
+					ChessInfoIO.chessInfoWrite(new File("chessinfo.csv"), recordInfo, infoLength);
 				}
 				methodLogger.info("棋手在({},{})落子", p.positionX, p.positionY);
 				setOwner(Constant.BLACKCHESS);
@@ -255,7 +256,7 @@ public class ChessMethod {
 		if (isWin(aiPostionP.positionX, aiPostionP.positionY)) {
 			setWiner(Constant.BLACKCHESS);
 			recordInfo[0] = new InfoUnit(getGameMode(), getWiner(), aiLevel);
-			ChessInfoIO.chessInfoWrite("chessinfo.csv", recordInfo, infoLength);
+			ChessInfoIO.chessInfoWrite(new File("chessinfo.csv"), recordInfo, infoLength);
 		}
 		setOwner(Constant.WHITECHESS);
 		setExclude(Constant.PEOPLEOWN);
@@ -269,8 +270,8 @@ public class ChessMethod {
 	 * 重置棋盘信息
 	 */
 	public void resetChessPanel() {
-		for (int i = 0; i != 15; i++)
-			for (int j = 0; j != 15; j++)
+		for (int i = 0; i != row; i++)
+			for (int j = 0; j != row; j++)
 				if (getable(i, j) != 0) {
 					setable(i, j, 0);
 				}

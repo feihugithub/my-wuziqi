@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -265,7 +266,7 @@ public class ChessPanel extends JPanel {
 	 */
 	public void replay() throws IOException {
 		InfoUnit[] infoReader = new InfoUnit[225];
-		int infoLength = ChessInfoIO.chessInfoRead("chessinfo.csv", infoReader);
+		int infoLength = ChessInfoIO.chessInfoRead(new File("chessinfo.csv"), infoReader);
 		int mode = infoReader[0].point.positionX;
 		int winer = infoReader[0].point.positionY;
 		int level = infoReader[0].control;
