@@ -19,7 +19,9 @@ public class TestChessInfoIO {
 		int length = 0;
 		Random r = new Random();
 		while (length < 2) {
-			info[length] = new InfoUnit(r.nextInt(15), r.nextInt(15), 1);
+			int a=r.nextInt(15),b=r.nextInt(15);
+			info[length] = new InfoUnit(a, b, 1);
+			System.out.println(a+" "+b+" "+"1");
 			length++;
 		}
 		try {
