@@ -2,7 +2,12 @@ package com.succez.wangzr.wuziqi;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,13 +22,31 @@ import com.succez.wangzr.wuziqi.tools.Point;
 
 public class TestPrimaryFind {
 
+	public static int chessInfoRead(String file, InfoUnit[] info) throws IOException {
+		InputStream in=TestPrimaryFind.class.getResourceAsStream(file);
+		InputStreamReader inReader=new InputStreamReader(in);
+		BufferedReader br = new BufferedReader(inReader);
+		int length = 0;
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			StringTokenizer st = new StringTokenizer(line,",");
+			int[] temp = new int[3];
+			int i = 0;
+			while (st.hasMoreTokens()) {
+				temp[i++] = Integer.parseInt(st.nextToken());
+			}
+			info[length++] = new InfoUnit(temp[0], temp[1], temp[2]);
+		}
+		br.close();
+		return length;
+	}
 	@Test
 	public void testPrimaryFind() throws IOException {
-		Logger Logger = LoggerFactory.getLogger(TestAdvancedFind.class);
+		Logger Logger = LoggerFactory.getLogger(TestPrimaryFind.class);
 		ChessMethod method = new ChessMethod(15);
 		Ai ai = new Ai(15, new int[15][15]);
 		InfoUnit[] info = new InfoUnit[225];
-		int length = ChessInfoIO.chessInfoRead("test/com/succez/wangzr/wuziqi/primary.csv", info);
+		int length = TestPrimaryFind.chessInfoRead("primary.csv", info);
 		int index = 2;
 		int winer = 0;
 		if (info[0].control == Constant.PRIMARY) {

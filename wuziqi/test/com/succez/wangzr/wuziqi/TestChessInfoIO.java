@@ -13,7 +13,7 @@ public class TestChessInfoIO {
 	@Test
 	public void testChessInfoRead() throws IOException {
 		int i = 0;
-		ChessInfoIO.chessInfoRead("info.csv", info);
+		ChessInfoIO.chessInfoRead("log/info.csv", info);
 		while (i < 2) {
 			System.out.print(info[i].point.positionX+" ");
 			System.out.print(info[i].point.positionY+" ");
@@ -23,7 +23,7 @@ public class TestChessInfoIO {
 	}
 	@Test
 	public void testChessInfoWrite() throws IOException {
-		String file = "info.csv";
+		String file = "log/info.csv";
 		int length = 0;
 		Random r = new Random();
 		while (length < 2) {
