@@ -15,12 +15,16 @@ public class IntToHex {
 	 */
 	public static String intToHex(int number) {
 		StringBuilder sBuffer = new StringBuilder();
+		if(number==Integer.MIN_VALUE){
+			String str="-80000000";
+			return str;
+		}
 		boolean isnegative = number < 0;
 		number = Math.abs(number);
-		while (number != 0) {
+		do {
 			sBuffer.append(digital[number % 16]);
 			number = number / 16;
-		}
+		}while (number != 0);
 		if (isnegative) {
 			sBuffer.append('-');
 		}
@@ -31,7 +35,8 @@ public class IntToHex {
 	final static char[] digital = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 	public static void main(String[] args) {
-		String str = IntToHex.intToHex(-15);
+		String str = IntToHex.intToHex(Integer.MIN_VALUE);
 		System.out.println(str);
+		System.out.println(Integer.toHexString(Integer.MIN_VALUE));
 	}
 }

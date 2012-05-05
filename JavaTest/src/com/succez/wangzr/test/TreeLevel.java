@@ -11,17 +11,21 @@ public class TreeLevel {
 
 	/**
 	 * 采用递归的方法实现了对某一指定层次的遍历
-	 * @param rootNode 某棵树的根节点，递归的时候它代表的是上一层调用中的树的子树
+	 * @param rootNode 某棵树的根节点，递归的时候它代表的是上一层调用中的树的子树根节点
 	 * @param n  被指定的层数
+	 * @param
+	 * @param
+	 * @param
 	 */
-	public static void treeLevel(TreeNode rootNode, int n) {
+	public static void treeLevel(TreeNode rootNode, int n, String[] levelInfo, int off, int length) {
 		if (n == 1) {
 			System.out.print(rootNode.getValue());
 			System.out.print(" ");
+			levelInfo[off] = rootNode.getValue();
 		}
 		else {
-			treeLevel(rootNode.getLeft(), n - 1);
-			treeLevel(rootNode.getRight(), n - 1);
+			treeLevel(rootNode.getLeft(), n - 1, levelInfo, off, length/2);
+			treeLevel(rootNode.getRight(), n - 1, levelInfo, off+length/2, length/2);
 		}
 	}
 
@@ -55,6 +59,16 @@ public class TreeLevel {
 		int height = (int) (Math.log(nodeInfo.length + 1) / Math.log(2));
 		TreeNode rootNode = new TreeNode();
 		TreeLevel.treeCreate(nodeInfo, rootNode, height);
-		TreeLevel.treeLevel(rootNode, 3);
+		int n = 3;
+		int length=(int) Math.pow(2, n - 1);
+		String levelInfo[] = new String[length];
+		TreeLevel.treeLevel(rootNode, n, levelInfo, 0,length);
+		int i = 0;
+		System.out.println();
+		while (i < length) {
+			System.out.print(levelInfo[i]);
+			System.out.print(" ");
+			i++;
+		}
 	}
 }
