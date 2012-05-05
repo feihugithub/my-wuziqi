@@ -1,4 +1,5 @@
 package com.succez.wangzr.test;
+
 /**
  * 实现将整数转换成字符串
  * <p>Copyright: Copyright (c) 2012<p>
@@ -13,17 +14,24 @@ public class IntToHex {
 	 * @return  转换成的字符串
 	 */
 	public static String intToHex(int number) {
-		StringBuffer sBuffer = new StringBuffer();
+		StringBuilder sBuffer = new StringBuilder();
+		boolean isnegative = number < 0;
+		number = Math.abs(number);
 		while (number != 0) {
-			sBuffer.append(number % 10);
-			number = number / 10;
+			sBuffer.append(digital[number % 16]);
+			number = number / 16;
+		}
+		if (isnegative) {
+			sBuffer.append('-');
 		}
 		sBuffer = sBuffer.reverse();
 		return sBuffer.toString();
 	}
 
+	final static char[] digital = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
 	public static void main(String[] args) {
-		String str = IntToHex.intToHex(12345);
+		String str = IntToHex.intToHex(-15);
 		System.out.println(str);
 	}
 }
