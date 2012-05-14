@@ -2,7 +2,6 @@ package com.succez.wangzr.myHttpServer;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 public class Response {
@@ -20,7 +19,7 @@ public class Response {
 		this.request = request;
 	}
 
-	public void sendResource() throws IOException {
+	public void sendResource() {
 		byte[] bytes = new byte[BUFFER_SIZE];
 		FileInputStream fiStream = null;
 		try {
@@ -38,15 +37,13 @@ public class Response {
 				String errorMessage = "<h1>404 File Not Found</h1>";
 				output.write(errorMessage.getBytes());
 			}
+			if (fiStream != null) {
+				fiStream.close();
+			}
 		}
 		catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		finally{
-			if (fiStream != null) {
-				fiStream.close();
-			}
 		}
 	}
 }

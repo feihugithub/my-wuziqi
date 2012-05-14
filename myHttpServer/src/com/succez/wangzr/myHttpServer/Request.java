@@ -17,7 +17,7 @@ public class Request {
 	 */
 	public void prase() {
 		int bufferSize = 2048;
-		StringBuffer request = new StringBuffer(bufferSize);
+		StringBuffer requestString = new StringBuffer(bufferSize);
 		int requestLenght;
 		byte[] buffer = new byte[bufferSize];
 		try {
@@ -28,10 +28,10 @@ public class Request {
 			requestLenght = -1;
 		}
 		for (int i = 0; i < requestLenght; i++) {
-			request.append((char) buffer[i]);
+			requestString.append((char) buffer[i]);
 		}
-		System.out.println(request.toString());
-		uri = praseUri(request.toString());
+		System.out.println(requestString.toString());
+		uri = praseUri(requestString.toString());
 	}
 /**
  * 根据http请求报文字符串分析URI
