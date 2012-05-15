@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Request {
+	/**
+	 * 标记get方法
+	 */
+	private static final String GET = "GET";
+
 	private InputStream input;
 
 	private String uri;
@@ -14,14 +19,15 @@ public class Request {
 
 	/**
 	 * 分析http请求报文，获取URI
+	 * @throws Exception 
 	 */
-	public void prase() {
+	public void prase() throws Exception {
 		int bufferSize = 2048;
 		StringBuffer requestString = new StringBuffer(bufferSize);
 		int requestLenght;
 		byte[] buffer = new byte[bufferSize];
 		try {
-			requestLenght=input.read(buffer);
+			requestLenght = input.read(buffer);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -33,18 +39,24 @@ public class Request {
 		System.out.println(requestString.toString());
 		uri = praseUri(requestString.toString());
 	}
-/**
- * 根据http请求报文字符串分析URI
- * @param requestString Http请求报文
- * @return  分析出来的URI
- */
-	private String praseUri(String requestString) {
+
+	/**
+	 * 根据http请求报文字符串分析URI
+	 * @param requestString Http请求报文
+	 * @return  分析出来的URI
+	 * @throws Exception 
+	 */
+	private String praseUri(String requestString) throws Exception {
 		int index1, index2;
 		index1 = requestString.indexOf(' ');
 		if (index1 != -1) {
-			index2 = requestString.indexOf(' ', index1 + 1);
-			if (index2 > index1) {
-				return requestString.substring(index1 + 1, index2);
+			if (GET.equals(requestString.substring(0, index1))) {
+				index2 = requestString.indexOf(' ', index1 + 1);
+				if (index2 > index1) {
+					return requestString.substring(index1 + 1, index2);
+				}
+			}else{
+				throw new Exception();
 			}
 		}
 		return "index.html";
