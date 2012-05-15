@@ -52,6 +52,7 @@ public class HttpServer {
 				e.printStackTrace();
 			}
 		}
+		threadPool.waitFinish();
 		threadPool.closePool();
 	}
 
