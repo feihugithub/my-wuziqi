@@ -7,12 +7,12 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 public class HttpServer {
 	/**
-	 * WEB_ROOT是HTML和其他文件的存放目录，该目录在myHttpSever工程目录下
+	 * WEB_ROOT是D:\
 	 */
 	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "resource";
+//	public static final String WEB_ROOT=new File("/").getAbsolutePath();
 
 	/**
 	 * 关闭服务器的命令
