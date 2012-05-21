@@ -30,14 +30,30 @@ public class Ai {
 		this.table = table;
 	}
 
+	/**
+	 * 为了测试ai而直接设置ai中的table，实际上在整个程序运行过程中ai的table是由引用它的对象更新的
+	 * @param x
+	 * @param y
+	 * @param color
+	 */
 	public void setable(int x, int y, int color) {
 		this.table[x][y] = color;
 	}
 
+	/**
+	 * 为了测试ai而读取ai中table的信息
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public int getable(int x, int y) {
 		return this.table[x][y];
 	}
 
+	/**
+	 * 为了测试ai是获取ai中的table
+	 * @return
+	 */
 	public int[][] getTable() {
 		return table;
 	}
@@ -52,10 +68,10 @@ public class Ai {
 	 */
 	private int compare(int currentPositionX, int currentPositionY, int nextPositionX, int nextPositionY) {
 		if (nextPositionX < 0 || nextPositionX > row - 1)
-			/**此种情况表明next位置在棋盘的左或者右方向的外部*/
+			//此种情况表明next位置在棋盘的左或者右方向的外部
 			return Constant.CROSSBORDER;
 		else if (nextPositionY < 0 || nextPositionY > row - 1)
-			/**此种情况表明next位置在棋盘的上或者下方向的外部*/
+			//此种情况表明next位置在棋盘的上或者下方向的外部
 			return Constant.CROSSBORDER;
 		else if (table[currentPositionX][currentPositionY] == table[nextPositionX][nextPositionY])
 			return Constant.SAME;
@@ -69,18 +85,15 @@ public class Ai {
 	 * @return  在横方向上对应的棋型
 	 */
 	private int getHorizontalChessStyle(int positionX, int positionY) {
-		/**记录横方向上的连子个数*/
+		//记录横方向上的连子个数
 		int countH = 0;
-		/**记录连子左边的情况，默认为无棋子*/
+		//记录连子左边的情况，默认为无棋子
 		int leftEmpty = Constant.EMPTY;
-		/**记录连子右边的情况，默认为无棋子*/
+		//记录连子右边的情况，默认为无棋子
 		int rightEmpty = Constant.EMPTY;
-		/**记录当前位置和下一位置棋子比较情况，默认为不同*/
+		//记录当前位置和下一位置棋子比较情况，默认为不同
 		int comparison = Constant.DIFFERENT;
-		/**
-		 *该for循环从横向左边计数
-		 *其中的switch根据comparison的情况设置leftEmpty的值
-		 */
+		//该for循环从横向左边计数,其中的switch根据comparison的情况设置leftEmpty的值
 		for (int i = 1; i != 5; i++) {
 			comparison = compare(positionX, positionY, positionX - i, positionY);
 			switch (comparison) {
@@ -97,10 +110,7 @@ public class Ai {
 			if (comparison != Constant.SAME)
 				break;
 		}
-		/**
-		 *该for循环从横向右边计数
-		 *其中的switch根据comparison的情况设置rightEmpty的值
-		 */
+		//该for循环从横向右边计数,其中的switch根据comparison的情况设置rightEmpty的值
 		for (int i = 1; i != 5; i++) {
 			comparison = compare(positionX, positionY, positionX + i, positionY);
 			switch (comparison) {
@@ -315,16 +325,14 @@ public class Ai {
 	 * @return  该节点考虑了四个方向以后的棋型
 	 */
 	private int positionRate(int positionX, int positionY) {
-		/**用于记录四个方向中最好的两个棋型*/
+		//用于记录四个方向中最好的两个棋型
 		int[] temp = { -1, -1 };
-		/**考虑了两个方向的棋型的估值*/
+		//考虑了两个方向的棋型的估值
 		int two = 0;
-		/**记录了某个方向的棋型*/
+		//记录了某个方向的棋型
 		int situation = getHorizontalChessStyle(positionX, positionY);
-		/**
-		 * switch中假若有某一个方向落子后形成了成五或者活四，就不用再考虑多方向的情况了，直接返回。
-		 * 若不是就要把四个方向中最好的两个棋型记录在temp数组中，且保持由大到小的顺序
-		 */
+		// switch中假若有某一个方向落子后形成了成五或者活四，就不用再考虑多方向的情况了，直接返回。
+		//若不是就要把四个方向中最好的两个棋型记录在temp数组中，且保持由大到小的顺序
 		switch (situation) {
 			case ChessStyle.SUCCESS_5:
 				return ChessStyle.SUCCESS_5;
@@ -387,7 +395,7 @@ public class Ai {
 		two = temp[0] + temp[1];
 		if (two > 35) {
 			switch (two) {
-			/**DOUBLE_DEAD_4,DEAD_4_LIVE_3,DOUBLE_LIVE_3情况是等价的所以给予的估分值一样*/
+			//DOUBLE_DEAD_4,DEAD_4_LIVE_3,DOUBLE_LIVE_3情况是等价的所以给予的估分值一样
 				case ChessStyle.DOUBLE_DEAD_4:
 					return ChessStyle.DOUBLE_DEAD_4 + 10;
 				case ChessStyle.DEAD_4_LIVE_3:
@@ -411,7 +419,7 @@ public class Ai {
 	 * @return  查找到的点
 	 */
 	public Point primaryFind() {
-		/**记录最大估分值*/
+		//记录最大估分值
 		int maxscore = -1;
 		int tempscore = 0;
 		int maxPositionX = 0, maxPositionY = 0;
@@ -498,9 +506,7 @@ public class Ai {
 					else {
 						backValue = minSearch(depth - 1, max);
 					}
-					/**
-					 * α剪枝
-					 */
+					// α剪枝
 					if (backValue >= α) {
 						table[i][j] = 0;
 						return backValue;
@@ -530,9 +536,7 @@ public class Ai {
 					else {
 						backValue = maxSearch(depth - 1, min);
 					}
-					/**
-					 * β剪枝
-					 */
+					//β剪枝
 					if (backValue <= β) {
 						table[i][j] = 0;
 						return backValue;

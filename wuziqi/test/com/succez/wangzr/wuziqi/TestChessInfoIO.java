@@ -19,18 +19,12 @@ public class TestChessInfoIO {
 		int length = 0;
 		Random r = new Random();
 		while (length < 2) {
-			int a=r.nextInt(15),b=r.nextInt(15);
+			int a = r.nextInt(15), b = r.nextInt(15);
 			info[length] = new InfoUnit(a, b, 1);
-			System.out.println(a+" "+b+" "+"1");
+			System.out.println(a + " " + b + " " + "1");
 			length++;
 		}
-		try {
-			ChessInfoIO.chessInfoWrite(file, info, length);
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ChessInfoIO.chessInfoWrite(file, info, length);
 
 		for (int j = 0; j < 2; j++) {
 			info[j] = null;
@@ -39,11 +33,7 @@ public class TestChessInfoIO {
 		try {
 			ChessInfoIO.chessInfoRead(file, info);
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally{
+		finally {
 			file.deleteOnExit();
 		}
 		while (i < 2) {

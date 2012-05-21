@@ -29,7 +29,10 @@ public class ChessMethod {
 	/**标记胜利者*/
 	private int winer = 0;
 
-	/**双人对战时下棋的控制权*/
+	/**设置下棋的控制权，如果是双人对战就是用来对下棋权的控制，但是如果是人机对战就是为了重置控制服务的，
+	 * 因为重置必须是在人又控制权的时候发生，因为此时没有线程在运行，如果是电脑在查找点，此时重置是没有效果的，
+	 * 因为它的现成还在运行，如果不杀死这个线程，此时调用主线程中的重置函数是没有效果的，所以我统一在人又控制权
+	 * 的时候重置棋盘*/
 	private int owner = Constant.BLACKCHESS;
 
 	/**选择人机对战还是双人对战*/
@@ -79,7 +82,7 @@ public class ChessMethod {
 	}
 
 	/**
-	 * 
+	 * 设置棋盘信息
 	 * @param positionX 待设置的点的横坐标
 	 * @param positionY 待设置的点的纵坐标
 	 * @param color     待设置的棋子信息
@@ -88,12 +91,12 @@ public class ChessMethod {
 		table[positionX][positionY] = color;
 	}
 
+	/**
+	 * 为了在测试ai的时候用ai对象中的table来设置该对象中的table
+	 * @param table
+	 */
 	public void setTable(int[][] table) {
 		this.table = table;
-	}
-
-	public int getRow() {
-		return row;
 	}
 
 	public int getAiLevel() {
@@ -243,7 +246,7 @@ public class ChessMethod {
 	 */
 	public void pcPlay() throws IOException {
 		Ai ai = new Ai(row, table);
-		/**记录Ai查到的点*/
+		//记录Ai查到的点
 		Point aiPostionP;
 		if (getAiLevel() == Constant.PRIMARY) {
 			aiPostionP = ai.primaryFind();
@@ -285,13 +288,13 @@ public class ChessMethod {
 	 * @return 返回值是一boolean值，true表示该点使得给用户胜利，false表示没有胜利
 	 */
 	public boolean isWin(int positionX, int positionY) {
-		/**countH代表横向上的棋子个数*/
+		//countH代表横向上的棋子个数
 		int countH = 0;
-		/**countS代表竖向上的棋子个数*/
+		//countS代表竖向上的棋子个数
 		int countS = 0;
-		/**countP代表撇向上棋子个数*/
+		//countP代表撇向上棋子个数
 		int countP = 0;
-		/**countN代表捺向上棋子的个数*/
+		//countN代表捺向上棋子的个数
 		int countN = 0;
 		for (int i = 1; i != 5; i++) {
 			if (compare(positionX, positionY, positionX + i, positionY))
@@ -402,6 +405,8 @@ public class ChessMethod {
 			return locationP;
 
 		}
+		//不正确的下棋点，假如radius小于space的一半，那么在格子的中间就会出现一片空白的区域，点在这个区域是没有意义的，如下
+		//就是处理这种情况的措施，对于这种情况程序处理此次落子不算，可以继续下，直到下棋到有效位置
 		else {
 			locationP.positionX = -1;
 			locationP.positionY = -1;
