@@ -7,21 +7,20 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-public class HttpServer {
-	/**
-	 * WEB_ROOT是D:\
-	 */
-	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "resource";
-//	public static final String WEB_ROOT=new File("/").getAbsolutePath();
 
-	/**
-	 * 关闭服务器的命令
-	 */
+import com.succez.wangzr.wzqfornet.control.AiAction;
+
+public class HttpServer {
+	/**WEB_ROOT是D:\succezIDE\workspace\my-wuziqi\myHttpServer\resource*/
+	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "resource";
+
+//	/**WEB_ROOT是D:*/
+	//	public static final String WEB_ROOT=new File("/").getAbsolutePath();
+
+	/**关闭服务器的命令*/
 	private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 
-	/**
-	 * 记录是否有关闭服务器的命令
-	 */
+	/**记录是否有关闭服务器的命令*/
 	private boolean shutdown = false;
 
 	public static void main(String[] args) {
@@ -58,7 +57,6 @@ public class HttpServer {
 
 	private Runnable createTask(final Socket client) {
 		return new Runnable() {
-
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
@@ -68,6 +66,11 @@ public class HttpServer {
 					Request request = new Request(input);
 					request.prase();
 					//创建Response对象
+					int index;
+					if ((index = request.getUri().indexOf('?')) != -1) {
+						AiAction action = new AiAction(request.getUri().substring(index + 1));
+						request.setUri("");
+					}
 					Response response = new Response(output);
 					response.setRequest(request);
 					response.sendResource();
