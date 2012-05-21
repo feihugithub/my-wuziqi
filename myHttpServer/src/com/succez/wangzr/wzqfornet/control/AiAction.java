@@ -2,6 +2,7 @@ package com.succez.wangzr.wzqfornet.control;
 
 import java.util.HashMap;
 
+import com.succez.wangzr.wzqfornet.control.Control;
 import com.succez.wangzr.wzqfornet.tool.Constant;
 import com.succez.wangzr.wzqfornet.tool.Point;
 
