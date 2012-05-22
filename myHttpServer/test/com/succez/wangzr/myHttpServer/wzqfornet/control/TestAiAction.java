@@ -26,19 +26,19 @@ public class TestAiAction {
 	@Test
 	public void testAction() {
 		AiAction aiAction = new AiAction("isStart=1&x=1&y=2&aiLevel=1");
-		assertEquals("!x=7&y=7&winer=0", aiAction.action());
+		assertEquals("<news><x>7</x><y>7</y><winer>0</winer></news>", aiAction.action());
 		for (int i = 0; i < 4; i++) {
 			aiAction.getControl().setable(0, i, Constant.WHITECHESS);
 		}
 		aiAction = new AiAction("x=0&y=4");
-		assertEquals("!winer=-1", aiAction.action());
+		assertEquals("<news><winer>-1</winer></news>", aiAction.action());
 		aiAction = new AiAction("x=8&y=8");
 		aiAction.getControl().resetChessPanel();
 		for (int j = 0; j < 3; j++) {
 			aiAction.getControl().setable(0, j, Constant.BLACKCHESS);
 		}
-		assertEquals("!x=0&y=3&winer=0", aiAction.action());
+		assertEquals("<news><x>0</x><y>3</y><winer>0</winer></news>", aiAction.action());
 		aiAction.getControl().setable(0, 3, Constant.BLACKCHESS);
-		assertEquals("!x=0&y=4&winer=1", aiAction.action());
+		assertEquals("<news><x>0</x><y>4</y><winer>1</winer></news>", aiAction.action());
 	}
 }

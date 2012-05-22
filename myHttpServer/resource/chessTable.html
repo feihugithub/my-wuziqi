@@ -8,64 +8,51 @@
 		<meta name="Copyright" content="succez.wangzr.com,版权所有，禁止转载"/>
 		<meta name="description" content="网络五子棋"/>
 		<title>网络五子棋</title>
-		<script language="JavaScript" type="text/javascript">
-			//在positionTransform中将从e获取的坐标转换成数组中的坐标，
-			//在paintchess中将数组中的坐标转换成在table中交点处的坐标
-			var x=0;
-			var y=0;			
-			var arr=new Array(15);
-			for(var i=0;i<15;i++)
-			{
-				arr[i]=new Array(15);
-				for(var j=0;j<15;j++)
-				{
-					arr[i][j]=0;
+		<script  language="JavaScript" type="text/javascript">
+			var x = 0;
+			var y = 0;
+			var arr = new Array(15);
+			for (var i = 0; i < 15; i++) {
+				arr[i] = new Array(15);
+				for (var j = 0; j < 15; j++) {
+					arr[i][j] = 0;
 				}
 			}
-			function paintchess(e)
-			{
-				var panel=document.getElementById("chesspanel");
-				positionTransform(e);				
-				if(x!=-1&&arr[x][y]==0)
-				{
-					debugger;
-					arr[x][y]=-1;//-1代表白棋
-					var img=document.createElement("img");
-					img.setAttribute("src","/white.png")
-					img.style.position="absolute";	
-					x=x*37+18.5;
-					y=y*37+18.5;			
-					img.style.top=y+"px";
-					img.style.left=x+"px";
+			function paintchess(e) {
+				var panel = document.getElementById("chesspanel");
+				positionTransform(e);
+				if (x != -1 && arr[x][y] == 0) {
+					arr[x][y] = -1;
+					var img = document.createElement("img");
+					img.setAttribute("src", "/white.png")
+					img.style.position = "absolute";
+					var X = x * 37 + 18.5;
+				    var Y = y * 37 + 18.5;
+					img.style.top = Y + "px";
+					img.style.left = X + "px";
 					panel.appendChild(img);
-				}		
+				}
 			}
-			function positionTransform(e)
-			{
-				x=parseInt(e.clientX/37);
-				y=parseInt(e.clientY/37);
-				var tempx=e.clientX%37;
-				var tempy=e.clientY%37;
-				if(tempx<18.5&&tempy<18.5)
-				{
-					x=x-1;
-					y=y-1;
+			function positionTransform(e) {
+				x = parseInt(e.clientX / 37);
+				y = parseInt(e.clientY / 37);
+				var tempx = e.clientX % 37;
+				var tempy = e.clientY % 37;
+				if (tempx < 18.5 && tempy < 18.5) {
+					x = x - 1;
+					y = y - 1;
 				}
-				else if(tempx>18.5&&tempy>18.5)
-				{
+				else if (tempx > 18.5 && tempy > 18.5) {
 				}
-				else if(tempx<18.5&&tempy>18.5)
-				{
-					x=x-1;
+				else if (tempx < 18.5 && tempy > 18.5) {
+					x = x - 1;
 				}
-				else if(tempx>18.5&&tempy<18.5)
-				{
-					y=y-1;
+				else if (tempx > 18.5 && tempy < 18.5) {
+					y = y - 1;
 				}
-				else
-				{
-					x=-1;
-					y=-1;
+				else {
+					x = -1;
+					y = -1;
 				}
 			}
 		</script>
@@ -87,7 +74,62 @@
 								height:35px;
 								width:35px;
 								}
-								
+			#control{
+				position:absolute;
+				top:0px;
+				left:594px;
+				margin:0px;
+				padding:0px;
+				width:400px;
+				height:594px;
+				background:#E0F0F8;
+			}
+			#user{
+				position:absolute;
+				top:2px;
+				margin:0px;
+				width:396px;
+				height:200px;
+				border:2px inset #D02090;
+				background-image:url(user.jpg);
+				background-repeat:no-repeat;
+			}
+			#computer{
+				position:absolute;
+				top:392px;
+				margin:0px;
+				width:396px;
+				height:200px;
+				border:2px inset #D02090;
+				background-image:url(computer.jpg);
+				background-repeat:no-repeat;
+				
+			}
+			#message{
+				position:absolute;
+				top:204px;
+				margin:0px;
+				width:396px;
+				height:186px;
+				border-left:2px inset #D02090;
+				border-right:2px inset #D02090;
+			}
+			#start{
+				position:relative;
+				top:150px;
+				left:20px;
+				width:80px;
+				height:30px;
+			}	
+			#harmony{
+				position:absolute;
+				top:0px;
+				left:994px;
+				margin:0px;
+				width:355px;
+				height:594px;
+				background:#E0F0F8;
+			}				
 		</style>
 	</head>
 	<body>
@@ -318,6 +360,17 @@
 					<td></td>
 				</tr>
 			</table>
+		</div>
+		<div id="control">
+			<div id="user">
+			</div>
+			<div id="message">
+				<input type="button" value="开始" id="start" onclick="">
+			</div>
+			<div id="computer">
+			</div>
+		</div>
+		<div id="harmony">
 		</div>
 	</body>
 </html>
