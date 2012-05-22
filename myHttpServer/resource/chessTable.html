@@ -9,8 +9,11 @@
 		<meta name="description" content="网络五子棋"/>
 		<title>网络五子棋</title>
 		<script  language="JavaScript" type="text/javascript">
-			var x = 0;
+			var x = 0;//table中的坐标
 			var y = 0;
+			var X = 0;//绝对坐标
+			var Y = 0;
+			var owner=1;
 			var arr = new Array(15);
 			for (var i = 0; i < 15; i++) {
 				arr[i] = new Array(15);
@@ -20,17 +23,19 @@
 			}
 			function paintchess(e) {
 				var panel = document.getElementById("chesspanel");
-				positionTransform(e);
 				if (x != -1 && arr[x][y] == 0) {
-					arr[x][y] = -1;
 					var img = document.createElement("img");
-					img.setAttribute("src", "/white.png")
+					if(owner==-1){
+						img.setAttribute("src", "/white.png")
+					}else{
+						img.setAttribute("src", "/black.png")
+					}
 					img.style.position = "absolute";
-					var X = x * 37 + 18.5;
-				    var Y = y * 37 + 18.5;
-					img.style.top = Y + "px";
-					img.style.left = X + "px";
-					panel.appendChild(img);
+						img.style.top = Y + "px";
+						img.style.left = X + "px";
+						panel.appendChild(img);
+						arr[x][y]=owner;
+						owner=-owner;
 				}
 			}
 			function positionTransform(e) {
@@ -54,6 +59,15 @@
 					x = -1;
 					y = -1;
 				}
+				X = x * 37 + 18.5;
+			    Y = y * 37 + 18.5;
+			}
+			function userchess(e){
+				positionTransform(e);
+				paintchess(e);
+			}
+			function start(){
+				alert("游戏开始了");
 			}
 		</script>
 		<style>
@@ -133,7 +147,7 @@
 		</style>
 	</head>
 	<body>
-		<div id="chesspanel" onclick="paintchess(event)">
+		<div id="chesspanel" onclick="userchess(event)">
 			<table border="1" cellspacing="0" cellpadding="0">
 				<tr>
 					<td></td>
@@ -365,7 +379,7 @@
 			<div id="user">
 			</div>
 			<div id="message">
-				<input type="button" value="开始" id="start" onclick="">
+				<input type="button" value="开始" id="start" onclick="start()">
 			</div>
 			<div id="computer">
 			</div>
