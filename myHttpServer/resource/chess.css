@@ -60,7 +60,13 @@
 		left:20px;
 		width:80px;
 		height:30px;
-	}	
+	}
+#choose{
+		position:absolute;
+		top:155px;
+		left:120px;
+		height:10px;
+}	
 #harmony{
 		position:absolute;
 		top:0px;
@@ -69,4 +75,20 @@
 		width:355px;
 		height:594px;
 		background:#E0F0F8;
-	}				
+	}
+.chessbox{
+		position:absolute;
+		top:0px;
+		left:230px;
+		margin:0px;
+		width:166px;
+		height:200px;
+		background-repeat:no-repeat;
+		background-position:bottom;
+}
+#white{
+		background-image:url(whitebox.png);
+}
+#black{
+		background-image:url(blackbox.png);
+}
