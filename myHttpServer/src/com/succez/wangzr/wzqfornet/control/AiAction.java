@@ -39,20 +39,20 @@ public class AiAction {
 	public String action() {
 		if (getParameter("isStart") != null) {
 			control.setAiLevel(Integer.parseInt(getParameter("aiLevel")));
+			control.resetChessPanel();
 			control.setable(7, 7, Constant.BLACKCHESS);
-			return "<news><x>7</x><y>7</y><winer>0</winer></news>";
+			return "!<news><x>7</x><y>7</y><winer>0</winer></news>";
 		}
 		else {
 			int x = Integer.parseInt(getParameter("x"));
 			int y = Integer.parseInt(getParameter("y"));
 			control.setable(x, y, Constant.WHITECHESS);
 			if (control.isWin(x, y)) {
-				return "<news><winer>-1</winer></news>";
+				return "!<news><winer>-1</winer></news>";
 			}
 			else {
 				Point point = control.pcPlay();
-				
-				return "<news><x>"+Integer.toString(point.positionX)+"</x><y>"+Integer.toString(point.positionY)+"</y><winer>"+Integer.toString(control.getWiner())+"</winer></news>";
+				return "!<news><x>"+Integer.toString(point.positionX)+"</x><y>"+Integer.toString(point.positionY)+"</y><winer>"+Integer.toString(control.getWiner())+"</winer></news>";
 			}
 
 		}

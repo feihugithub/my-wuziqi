@@ -29,11 +29,11 @@ public class HttpServer {
 	}
 
 	public void await() {
-		ThreadPool threadPool = new ThreadPool(5);
+		ThreadPool threadPool = new ThreadPool(10);
 		ServerSocket serverSocket = null;
 		int port = 8080;
 		try {
-			serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+			serverSocket = new ServerSocket(port, 1, InetAddress.getByName("192.168.2.106"));
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -69,7 +69,7 @@ public class HttpServer {
 					int index;
 					if ((index = request.getUri().indexOf('?')) != -1) {
 						AiAction action = new AiAction(request.getUri().substring(index + 1));
-						request.setUri("");
+						request.setUri(action.action());
 					}
 					Response response = new Response(output);
 					response.setRequest(request);

@@ -38,6 +38,7 @@ public class Request {
 		}
 		System.out.println(requestString.toString());
 		uri = praseUri(requestString.toString());
+		System.out.println("获得uri是："+uri);
 	}
 
 	/**

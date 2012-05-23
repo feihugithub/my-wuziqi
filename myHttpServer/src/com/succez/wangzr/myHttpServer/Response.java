@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 
-import com.succez.wangzr.wzqfornet.control.AiAction;
-
 public class Response {
 	private static final int BUFFER_SIZE = 1024;
 
@@ -26,8 +24,9 @@ public class Response {
 		FileInputStream fiStream = null;
 		try {
 			String uri=request.getUri();
-			if (uri.indexOf('!') != -1) {
-				output.write(uri.getBytes());
+			int index=uri.indexOf('!');
+			if (index!= -1) {
+				output.write(uri.substring(index+1).getBytes());
 			}
 			else {
 				File file = new File(HttpServer.WEB_ROOT, request.getUri());

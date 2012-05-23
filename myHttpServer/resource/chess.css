@@ -1,0 +1,72 @@
+#chesspanel {
+		position:absolute;
+		top:0px;
+		left:0px;
+		margin:0px;
+		padding:37px;
+		background:#CD853F;
+		}
+#chesspanel table{
+		margin:0px;
+		padding:0px;
+		cursor:pointer;
+}
+#chesspanel table td{
+		height:35px;
+		width:35px;
+		}
+#control{
+		position:absolute;
+		top:0px;
+		left:594px;
+		margin:0px;
+		padding:0px;
+		width:400px;
+		height:594px;
+		background:#E0F0F8;
+}
+#user{
+		position:absolute;
+		top:2px;
+		margin:0px;
+		width:396px;
+		height:200px;
+		border:2px inset #D02090;
+		background-image:url(user.jpg);
+		background-repeat:no-repeat;
+	}
+#computer{
+		position:absolute;
+		top:392px;
+		margin:0px;
+		width:396px;
+		height:200px;
+		border:2px inset #D02090;
+		background-image:url(computer.jpg);
+		background-repeat:no-repeat;
+	}
+#message{
+		position:absolute;
+		top:204px;
+		margin:0px;
+		width:396px;
+		height:186px;
+		border-left:2px inset #D02090;
+		border-right:2px inset #D02090;
+}
+#start{
+		position:relative;
+		top:150px;
+		left:20px;
+		width:80px;
+		height:30px;
+	}	
+#harmony{
+		position:absolute;
+		top:0px;
+		left:994px;
+		margin:0px;
+		width:355px;
+		height:594px;
+		background:#E0F0F8;
+	}				
