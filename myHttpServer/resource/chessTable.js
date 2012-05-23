@@ -135,18 +135,3 @@ function processResponse() {
 		}
 	}
 }
-function radio_check() {
-	var radio_arr = document.getElementsByTagName("radio");
-	for (var i = 0; i < radio_arr.length; i++) {
-		if (radio_arr[i].checked) {
-			if (i == 0) {
-				aiLevel = 1;
-				break;
-			}
-			else {
-				aiLevel = -1;
-				break;
-			}
-		}
-	}
-}
