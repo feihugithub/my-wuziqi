@@ -27,6 +27,7 @@ public class Response {
 			int index=uri.indexOf('!');
 			if (index!= -1) {
 				output.write(uri.substring(index+1).getBytes());
+				System.out.println("返回的信息是:"+uri.substring(index+1));
 			}
 			else {
 				File file = new File(HttpServer.WEB_ROOT, request.getUri());

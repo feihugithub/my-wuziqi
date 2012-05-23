@@ -1,5 +1,4 @@
 //-1代表白棋，1代表黑棋
-var panel = document.getElementById("chesspanel");
 var x = 0;//用户选择的点对应在arr数组中的坐标
 var y = 0;
 var X = 0;//用户选择的点对应在页面上的绝对坐标
@@ -12,8 +11,9 @@ for (var i = 0; i < 15; i++) {
 		arr[i][j] = 0;
 	}
 }
-function paintchess() {
+function paintchess() {//（逻辑没有错误）
 	if (x != -1 && arr[x][y] == 0) {//指定合法的下棋点
+		var panel = document.getElementById("chesspanel");
 		var img = document.createElement("img");
 		img.style.position = "absolute";
 		img.style.top = Y + "px";
@@ -24,11 +24,12 @@ function paintchess() {
 		else {
 			img.setAttribute("src", "black.png");
 		}
+		arr[x][y]=owner;
 		owner = -owner;
 		panel.appendChild(img);
 	}
 }
-function positionTransform(e) {//因为用户点击的位置往往不是要下棋的准确位置，要通过计算转换成准确的位置
+function positionTransform(e) {//因为用户点击的位置往往不是要下棋的准确位置，要通过计算转换成准确的位置（逻辑没有错误）
 	x = parseInt(e.clientX / 37);
 	y = parseInt(e.clientY / 37);
 	var tempx = e.clientX % 37;
