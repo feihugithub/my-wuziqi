@@ -1,14 +1,17 @@
+body{
+	background:#E0F0F8;
+}
 #chesspanel {
 		position:absolute;
-		top:0px;
-		left:0px;
-		margin:0px;
+		top:0;
+		left:0;
+		margin:0;
 		padding:37px;
 		background:#CD853F;
 		}
 #chesspanel table{
-		margin:0px;
-		padding:0px;
+		margin:0;
+		padding:0;
 		cursor:pointer;
 }
 #chesspanel table td{
@@ -17,18 +20,17 @@
 		}
 #control{
 		position:absolute;
-		top:0px;
+		top:0;
 		left:594px;
-		margin:0px;
-		padding:0px;
+		margin:0;
+		padding:0;
 		width:400px;
 		height:594px;
-		background:#E0F0F8;
 }
 #user{
 		position:absolute;
-		top:0px;
-		margin:0px;
+		top:0;
+		margin:0;
 		width:396px;
 		height:200px;
 		border:2px inset #D02090;
@@ -38,7 +40,7 @@
 #computer{
 		position:absolute;
 		top:390px;
-		margin:0px;
+		margin:0;
 		width:396px;
 		height:200px;
 		border:2px inset #D02090;
@@ -48,7 +50,7 @@
 #message{
 		position:absolute;
 		top:204px;
-		margin:0px;
+		margin:0;
 		width:396px;
 		height:186px;
 		border-left:2px inset #D02090;
@@ -69,9 +71,9 @@
 }	
 .chessbox{
 		position:absolute;
-		top:0px;
+		top:0;
 		left:230px;
-		margin:0px;
+		margin:0;
 		width:166px;
 		height:200px;
 		background-repeat:no-repeat;

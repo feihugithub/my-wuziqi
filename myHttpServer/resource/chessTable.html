@@ -1,6 +1,6 @@
-<html style="background:#E0F0F8;">
+<html>
 	<head>
-		<link rel="stylesheet" href="chess.css" type="text/css"></link>
+		<link rel="stylesheet" href="chess.css" type="text/css"/>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -17,7 +17,8 @@
 			var isStart=0;
 			var winer=0;
 			var owner = 1;//在绘制棋子的时候用到，根据其确定该绘什么颜色的棋子
-			var aiLevel=1;
+			var aiLevel=-1;
+			var exclusion=0;
 			var XMLHttpReq = false;
 			var arr = new Array(15);//客户端和服务器端都会维护一个数组去记录下棋的状况，客户端只是用来查询下棋点是否合法。
 			for (var i = 0; i < 15; i++) {
@@ -70,9 +71,15 @@
 			}
 			function userchess(e) {
 				if (winer == 0 && isStart == 1) {
-					positionTransform(e);
-					paintchess();
-					sendRequest('aiAction?x='+x+'&y='+y);
+					if(exclusion==1){
+						exclusion=0;
+						positionTransform(e);
+						paintchess();
+						sendRequest('aiAction?x='+x+'&y='+y);
+					}
+					else{
+						alert("don't hurry,please wait the ai");
+					}
 				}
 				else {
 					alert("您还没有开始游戏！");
@@ -137,8 +144,7 @@
 								isStart = 0;
 								alert("sorry！You lose！");
 							}
-						}
-			
+						}exclusion=1;
 					}
 					else {
 						window.alert("there is something wrong");

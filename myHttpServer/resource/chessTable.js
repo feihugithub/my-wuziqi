@@ -6,7 +6,8 @@ var Y = 0;
 var isStart = 0;
 var winer = 0;
 var owner = 1;// 在绘制棋子的时候用到，根据其确定该绘什么颜色的棋子
-var aiLevel = 1;
+var aiLevel = -1;
+var exclusion = 0;
 var XMLHttpReq = false;
 var arr = new Array(15);// 客户端和服务器端都会维护一个数组去记录下棋的状况，客户端只是用来查询下棋点是否合法。
 for (var i = 0; i < 15; i++) {
@@ -16,7 +17,6 @@ for (var i = 0; i < 15; i++) {
 	}
 }
 function paintchess() {
-	debugger;
 	if (x != -1 && arr[x][y] == 0) {// 指定合法的下棋点
 		var img = document.createElement("img");
 		var panel = document.getElementById("chesspanel");
@@ -60,9 +60,15 @@ function positionTransform(e) {// 因为用户点击的位置往往不是要下�
 }
 function userchess(e) {
 	if (winer == 0 && isStart == 1) {
-		positionTransform(e);
-		paintchess();
-		sendRequest('aiAction?x=' + x + '&y=' + y);
+		if (exclusion == 1) {
+			exclusion = 0;
+			positionTransform(e);
+			paintchess();
+			sendRequest('aiAction?x=' + x + '&y=' + y);
+		}
+		else {
+			alert("don't hurry,please wait the ai");
+		}
 	}
 	else {
 		alert("您还没有开始游戏！");
@@ -128,7 +134,7 @@ function processResponse() {
 					alert("sorry！You lose！");
 				}
 			}
-
+			exclusion = 1;
 		}
 		else {
 			window.alert("there is something wrong");
