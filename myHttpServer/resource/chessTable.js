@@ -79,6 +79,7 @@ function startGame() {
 	if (startnode.value == "开始") {
 		debugger;
 		isStart = 1;
+		if(document.choose.aiLevel[1].checked)aiLevel=-1;
 		alert("现在可以开始游戏了！祝您好运！");
 		startnode.value = "重新开始";
 		sendRequest('aiAction?isStart=' + isStart + '&aiLevel=' + aiLevel);
