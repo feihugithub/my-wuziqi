@@ -37,8 +37,8 @@ public class Response {
 				fiStream = new FileInputStream(file);
 				int ch = fiStream.read(bytes, 0, BUFFER_SIZE);
 				while (ch != -1) {
-					output.write(bytes);
-					ch = fiStream.read(bytes, 0, ch);
+					output.write(bytes,0,ch);
+					ch = fiStream.read(bytes, 0, BUFFER_SIZE);
 				}
 				output.flush();
 				if (fiStream != null) {
