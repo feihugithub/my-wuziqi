@@ -85,3 +85,13 @@ body{
 #black{
 		background-image:url(blackbox.png);
 }
+#show{
+	background:#E0F0F8;
+}
+.think{
+	background:#E0F0F8;
+	border:0;
+	height:30px;
+	width:165px;
+	text-align:center;
+}

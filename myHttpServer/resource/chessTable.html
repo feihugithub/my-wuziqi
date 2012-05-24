@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<link rel="stylesheet" href="chess.css" type="text/css"/>
+		<link rel="stylesheet" href="chessTable.css" type="text/css"/>
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -241,9 +241,12 @@
 		</div>
 		<div id="control">
 			<div id="user">
-				<div id="white" class="chessbox"></div>
+				<div id="white" class="chessbox">
+					<input type="text" class="think" id="think1">
+				</div>
 			</div>
 			<div id="message">
+				<textarea id="show" cols="45" rows="9" readonly="readonly"></textarea>
 				<input type="button" value="开始" id="start" onclick="startGame()"/>
 				<form id="choose" name="choose">
 					初级：<input type="radio" checked="checked" name="aiLevel"/>
@@ -251,7 +254,9 @@
 				</form>
 			</div>
 			<div id="computer">
-				<div id="black" class="chessbox"></div>
+				<div id="black" class="chessbox">
+					<input type="text" class="think" id="think2">
+				</div>
 			</div>
 		</div>
 	</body>

@@ -31,6 +31,7 @@ function paintchess() {
 		}
 		arr[x][y] = owner;
 		owner = -owner;
+		showThink(owner);
 		panel.appendChild(img);
 	}
 }
@@ -64,6 +65,8 @@ function userchess(e) {
 			exclusion = 0;
 			positionTransform(e);
 			paintchess();
+			var news = "您在(" + x + "," + y + ")下了棋子，这是一个不错的选择哦！";
+			showNews(news);
 			sendRequest('aiAction?x=' + x + '&y=' + y);
 		}
 		else {
@@ -79,7 +82,14 @@ function startGame() {
 	if (startnode.value == "开始") {
 		debugger;
 		isStart = 1;
-		if(document.choose.aiLevel[1].checked)aiLevel=-1;
+		if (document.choose.aiLevel[1].checked)
+			aiLevel = -1;
+		var news;
+		if (aiLevel == 1)
+			news = "您选择了初级电脑，它智力有限，您要让着它啊！"
+		else
+			news = "您选择了高级电脑，它技术还行，你要小心了！"
+		showNews(news);
 		alert("现在可以开始游戏了！祝您好运！");
 		startnode.value = "重新开始";
 		sendRequest('aiAction?isStart=' + isStart + '&aiLevel=' + aiLevel);
@@ -87,7 +97,21 @@ function startGame() {
 	else {
 		location.reload();
 	}
-
+}
+function showNews(news) {
+	document.all.show.value += news + '\n';
+	document.all.show.scrollTop += 20;
+}
+function showThink(owner) {
+	var think = "let me see!"
+	if (owner == -1) {
+		document.all.think1.value = think;
+		document.all.think2.value = "";
+	}
+	else {
+		document.all.think1.value = "";
+		document.all.think2.value = think;
+	}
 }
 // 创建XMLHttpRequest对象
 function createXMLHttpRequest() {
@@ -123,6 +147,8 @@ function processResponse() {
 			if (winer == -1) {
 				isStart = 0;
 				alert("congratulations！You win！");
+				var news = "您在(" + x + "," + y + ")下了棋子，您真是个天才，您胜出了！";
+				showNews(news);
 			}
 			else {
 				x = XMLHttpReq.responseXML.getElementsByTagName("x")[0].firstChild.data;
@@ -130,9 +156,13 @@ function processResponse() {
 				X = x * 37 + 18.5;
 				Y = y * 37 + 18.5;
 				paintchess();
+				var news = "ai在(" + x + "," + y + ")下了棋子，它已经渐渐不支了...！";
+				showNews(news);
 				if (winer == 1) {
 					isStart = 0;
 					alert("sorry！You lose！");
+					news = "wow，它获胜了，您大意了，再来一局吧！";
+					showNews(news);
 				}
 			}
 			exclusion = 1;
