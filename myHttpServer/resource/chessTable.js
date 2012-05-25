@@ -17,6 +17,7 @@ for (var i = 0; i < 15; i++) {
 	}
 }
 function paintchess() {
+	debugger;
 	if (x != -1 && arr[x][y] == 0) {// 指定合法的下棋点
 		var img = document.createElement("img");
 		var panel = document.getElementById("chesspanel");
@@ -33,6 +34,11 @@ function paintchess() {
 		owner = -owner;
 		showThink(owner);
 		panel.appendChild(img);
+		return true;
+	}
+	else {
+		alert("您指定的下棋点不合法！请重新下棋。");
+		return false;
 	}
 }
 function positionTransform(e) {// 因为用户点击的位置往往不是要下棋的准确位置，要通过计算转换成准确的位置
@@ -62,12 +68,13 @@ function positionTransform(e) {// 因为用户点击的位置往往不是要下�
 function userchess(e) {
 	if (winer == 0 && isStart == 1) {
 		if (exclusion == 1) {
-			exclusion = 0;
 			positionTransform(e);
-			paintchess();
-			var news = "您在(" + x + "," + y + ")下了棋子，这是一个不错的选择哦！";
-			showNews(news);
-			sendRequest('aiAction?x=' + x + '&y=' + y);
+			if (paintchess()) {//这实际上是个循环，知道用户指定的下起点是正确的，才向服务器发送请求。
+				exclusion = 0;
+				var news = "您在(" + x + "," + y + ")下了棋子，这是一个不错的选择哦！";
+				showNews(news);
+				sendRequest('aiAction?x=' + x + '&y=' + y);
+			}
 		}
 		else {
 			alert("don't hurry,please wait the ai");
@@ -80,7 +87,6 @@ function userchess(e) {
 function startGame() {
 	var startnode = document.getElementById("start");
 	if (startnode.value == "开始") {
-		debugger;
 		isStart = 1;
 		if (document.choose.aiLevel[1].checked)
 			aiLevel = -1;
@@ -133,7 +139,6 @@ function createXMLHttpRequest() {
 }
 // Ajax发送请求的方法
 function sendRequest(url) {
-	debugger;
 	createXMLHttpRequest();
 	XMLHttpReq.open("GET", url, true);
 	XMLHttpReq.onreadystatechange = processResponse;

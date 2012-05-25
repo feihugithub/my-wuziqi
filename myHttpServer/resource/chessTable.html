@@ -8,11 +8,11 @@
 		<meta name="Copyright" content="succez.wangzr.com,版权所有，禁止转载"/>
 		<meta name="description" content="网络五子棋"/>
 		<title>网络五子棋</title>
-		<script language="javaScript" src="chessTable.js"></script>
+		<script type="text/javascript" language="javaScript" src="chessTable.js"></script>
 	</head>
 	<body>
 		<div id="chesspanel" onclick="userchess(event)">
-			<table border="1" cellspacing="0" cellpadding="0">
+			<table border="1" cellspacing="0" cellpadding="0" summary="FIR panel">
 				<tr>
 					<td></td>
 					<td></td>
@@ -242,7 +242,7 @@
 		<div id="control">
 			<div id="user">
 				<div id="white" class="chessbox">
-					<input type="text" class="think" id="think1">
+					<input type="text" class="think" id="think1" readonly="readonly">
 				</div>
 			</div>
 			<div id="message">
@@ -255,7 +255,7 @@
 			</div>
 			<div id="computer">
 				<div id="black" class="chessbox">
-					<input type="text" class="think" id="think2">
+					<input type="text" class="think" id="think2" readonly="readonly">
 				</div>
 			</div>
 		</div>
